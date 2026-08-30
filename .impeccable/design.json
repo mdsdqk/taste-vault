@@ -1,0 +1,326 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-30T18:30:00Z",
+  "title": "Design System: TasteVault Portal",
+  "extensions": {
+    "colorMeta": {
+      "wall-ground": {
+        "role": "surface",
+        "displayName": "Wall Ground",
+        "canonical": "#e6eaee",
+        "tonalRamp": ["#0f1215", "#1c2128", "#262c34", "#48515a", "#9aa6b2", "#c9d1d8", "#e6eaee", "#ffffff"]
+      },
+      "paper-panel": {
+        "role": "surface",
+        "displayName": "Paper Panel",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#12161b", "#1c2128", "#262c34", "#39424c", "#5b6672", "#8f9aa6", "#cdd5dc", "#ffffff"]
+      },
+      "plate-backing": {
+        "role": "surface",
+        "displayName": "Plate Backing",
+        "canonical": "#eef1f4",
+        "tonalRamp": ["#12161b", "#1c2128", "#262c34", "#3c4550", "#5f6a76", "#95a0ac", "#d0d8df", "#eef1f4"]
+      },
+      "near-black-ink": {
+        "role": "ink",
+        "displayName": "Near-Black Ink",
+        "canonical": "#0f1418",
+        "tonalRamp": ["#0f1418", "#1e262e", "#333f4a", "#48515a", "#6b7681", "#9aa6b2", "#c9d1d8", "#eef1f4"]
+      },
+      "soft-ink": {
+        "role": "ink",
+        "displayName": "Soft Ink",
+        "canonical": "#48515a",
+        "tonalRamp": ["#0f1418", "#1e262e", "#333f4a", "#48515a", "#6b7681", "#9aa6b2", "#c9d1d8", "#eef1f4"]
+      },
+      "plate-keyline": {
+        "role": "ink",
+        "displayName": "Plate Keyline",
+        "canonical": "#0f1418",
+        "tonalRamp": ["#0f1418", "#1a2027", "#2b333c", "#3d4650", "#5c6672", "#8b96a2", "#bcc5cd", "#e4e9ee"]
+      },
+      "cobalt-accent": {
+        "role": "accent",
+        "displayName": "Cobalt Accent",
+        "canonical": "#1452ff",
+        "tonalRamp": ["#05123f", "#0a1f6e", "#0f34b0", "#1247e0", "#1452ff", "#4a7bff", "#7ea3ff", "#c7d6ff"]
+      },
+      "cobalt-text": {
+        "role": "accent",
+        "displayName": "Cobalt Text",
+        "canonical": "#1247e0",
+        "tonalRamp": ["#05123f", "#0a1f6e", "#0f34b0", "#1247e0", "#1452ff", "#4a7bff", "#7ea3ff", "#c7d6ff"]
+      },
+      "cyan-highlight": {
+        "role": "highlight",
+        "displayName": "Cyan Highlight",
+        "canonical": "#0bb6c9",
+        "tonalRamp": ["#032f34", "#064d56", "#08909f", "#0bb6c9", "#22e6c8", "#5ceede", "#a0f4ea", "#d7faf5"]
+      },
+      "liked-green": {
+        "role": "sentiment-positive",
+        "displayName": "Liked Green",
+        "canonical": "#0aa259",
+        "tonalRamp": ["#04231b", "#063f2c", "#077a45", "#0aa259", "#26d47e", "#5ae3a2", "#9fefc6", "#dcf4e8"]
+      },
+      "liked-tint": {
+        "role": "sentiment-positive",
+        "displayName": "Liked Tint",
+        "canonical": "#dcf4e8",
+        "tonalRamp": ["#04231b", "#063f2c", "#077a45", "#0aa259", "#26d47e", "#5ae3a2", "#9fefc6", "#dcf4e8"]
+      },
+      "disliked-red": {
+        "role": "sentiment-negative",
+        "displayName": "Disliked Red",
+        "canonical": "#e11d34",
+        "tonalRamp": ["#331a1e", "#5c1420", "#a3162a", "#e11d34", "#ff4b60", "#ff8593", "#ffb3bd", "#ffe1e3"]
+      },
+      "disliked-tint": {
+        "role": "sentiment-negative",
+        "displayName": "Disliked Tint",
+        "canonical": "#ffe1e3",
+        "tonalRamp": ["#331a1e", "#5c1420", "#a3162a", "#e11d34", "#ff4b60", "#ff8593", "#ffb3bd", "#ffe1e3"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display — Young Serif",
+        "purpose": "The TasteVault wordmark and nothing else at full scale; warm chunky old-style serif, capped at 6rem, line-height 0.9, tracking -0.01em. The 'Vault' half is set in the cobalt accent."
+      },
+      "headline": {
+        "displayName": "Headline — Young Serif",
+        "purpose": "The Reference detail entry title at clamp(2rem, 4.5vw, 3.1rem); also the visual scale the monumental User Note lead borrows."
+      },
+      "title": {
+        "displayName": "Title — Young Serif",
+        "purpose": "Reference card titles on the wall, empty-state headings, and dialog titles at 1.5rem / 1.06."
+      },
+      "body": {
+        "displayName": "Body — Spectral",
+        "purpose": "The reading face: the rendered User Note at 1.14rem / 1.62, base body at 17px / 1.55 with oldstyle numerals, the italic card clause, the italic search input, and the italic 'later hand' marginalia."
+      },
+      "label": {
+        "displayName": "Label — Spline Sans Mono",
+        "purpose": "Every control, meta line, badge, caption, and definition list. Uppercase, letter-spaced 0.09em-0.18em, tabular-nums where figures align."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-plate",
+        "value": "3px 6px 16px rgba(15, 20, 24, 0.16)",
+        "purpose": "Resting cast shadow under a pinned plate. NOIR: 3px 6px 18px rgba(0,0,0,0.5)."
+      },
+      {
+        "name": "shadow-plate-lift",
+        "value": "6px 12px 26px rgba(15, 20, 24, 0.22)",
+        "purpose": "An ignited (hover/focus) plate and the modal dialog. NOIR: 6px 12px 30px rgba(0,0,0,0.62)."
+      },
+      {
+        "name": "shadow-pin",
+        "value": "0 2px 3px rgba(0, 0, 0, 0.32)",
+        "purpose": "The radial-gradient pushpin disc. NOIR: 0 2px 4px rgba(0,0,0,0.6)."
+      },
+      {
+        "name": "plate-mat-ring",
+        "value": "0 0 0 6px var(--panel), 0 0 0 7.5px color-mix(in srgb, var(--ink) 18%, transparent)",
+        "purpose": "Layered after the cast shadow on every plate: the 6px paper mat plus a 1.5px ink keyline echo. Disliked plates swap the outer ring to color-mix(in srgb, var(--dislike) 35%, transparent)."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 2px solid var(--accent); outline-offset: 2px",
+        "purpose": "Global :focus-visible ring. On a plate the offset opens to 6px; pointer focus stays quiet via :focus:not(:focus-visible)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "plate-ignite",
+        "value": "transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.22s ease",
+        "purpose": "The one authored moment. On hover/focus a plate straightens from its resting tilt to rotate(0), lifts translateY(-5px), and moves shadow-plate -> shadow-plate-lift."
+      },
+      {
+        "name": "wall-dim",
+        "value": "opacity 0.18s ease; .wall:hover .piece { opacity: 0.48 }",
+        "purpose": "Neighbours fall to context weight while one piece is ignited. Gated to @media (hover: hover) and (pointer: fine)."
+      },
+      {
+        "name": "clause-open",
+        "value": "-webkit-line-clamp: 3 -> 9",
+        "purpose": "The printed label's User Note clause opens from 3 to 9 lines when its piece ignites."
+      },
+      {
+        "name": "skeleton-pulse",
+        "value": "pulse 1.4s ease-in-out infinite (opacity 1 -> 0.55)",
+        "purpose": "Loading plates while the server scans references/."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important }",
+        "purpose": "Full reduced-motion path: the ignite still straightens and opens the label, but with no animated transform or dim."
+      }
+    ],
+    "breakpoints": [
+      { "name": "wall-4-to-2", "value": "1000px" },
+      { "name": "detail-stack", "value": "940px" },
+      { "name": "band-stack", "value": "720px" },
+      { "name": "wall-2-to-1", "value": "560px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "button-outline",
+      "kind": "button",
+      "refersTo": "components.button-outline",
+      "description": "Default button. Typeset mono-caps label, 2px ink border, square, transparent fill. Hover floods the cyan highlight with dark-ink text. No radius, no shadow.",
+      "html": "<button type=\"button\" class=\"ds-btn\"><svg class=\"ds-btn__icon\" viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg>Pin a reference</button>",
+      "css": ".ds-btn{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;line-height:1;padding:0.6rem 1rem;border:2px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:0.45rem}.ds-btn__icon{font-size:1rem;width:1em;height:1em}.ds-btn:hover{background:var(--hi);color:#04231b}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn:active{background:var(--hi);color:#04231b}"
+    },
+    {
+      "name": "button-solid",
+      "kind": "button",
+      "refersTo": "components.button-solid",
+      "description": "Primary action ('Pin a reference', 'Cap the pen — save'). Ink fill, ground-coloured text. Hover flips to the cobalt accent with white text.",
+      "html": "<button type=\"button\" class=\"ds-btn ds-btn--solid\"><svg class=\"ds-btn__icon\" viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg>Pin a reference</button>",
+      "css": ".ds-btn--solid{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;line-height:1;padding:0.6rem 1rem;border:2px solid var(--ink);border-radius:0;background:var(--ink);color:var(--ground);cursor:pointer;display:inline-flex;align-items:center;gap:0.45rem}.ds-btn--solid .ds-btn__icon{font-size:1rem;width:1em;height:1em}.ds-btn--solid:hover{background:var(--accent);color:#fff;border-color:var(--accent)}.ds-btn--solid:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn--solid:active{background:var(--accent);color:#fff;border-color:var(--accent)}"
+    },
+    {
+      "name": "button-danger",
+      "kind": "button",
+      "refersTo": "components.button-danger",
+      "description": "Destructive action ('Remove', 'Delete for good'). Disliked-red border and text on transparent; hover floods red with white text.",
+      "html": "<button type=\"button\" class=\"ds-btn ds-btn--danger\"><svg class=\"ds-btn__icon\" viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h16M10 4h4M9 7l.7 12.5A1.5 1.5 0 0 0 11.2 21h1.6a1.5 1.5 0 0 0 1.5-1.5L15 7\"/></svg>Remove</button>",
+      "css": ".ds-btn--danger{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;line-height:1;padding:0.6rem 1rem;border:2px solid var(--dislike);border-radius:0;background:transparent;color:var(--dislike);cursor:pointer;display:inline-flex;align-items:center;gap:0.45rem}.ds-btn--danger .ds-btn__icon{font-size:1rem;width:1em;height:1em}.ds-btn--danger:hover{background:var(--dislike);color:#fff}.ds-btn--danger:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn--danger:active{background:var(--dislike);color:#fff}"
+    },
+    {
+      "name": "segmented-control",
+      "kind": "nav",
+      "refersTo": "components.segmented-control",
+      "description": "Buttons welded edge-to-edge inside one 2px ink frame, divided by 2px ink border-left. Active segment floods ink/ground; hover floods cyan. Used for the section nav, theme picker, and kind filter.",
+      "html": "<div class=\"ds-seg\" role=\"group\" aria-label=\"Sections\"><button type=\"button\" class=\"ds-seg__item\" data-active=\"true\">The Wall</button><button type=\"button\" class=\"ds-seg__item\">Recently removed</button></div>",
+      "css": ".ds-seg{display:inline-flex;border:2px solid var(--ink);border-radius:0}.ds-seg__item{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.625rem;letter-spacing:0.18em;text-transform:uppercase;line-height:1;color:var(--ink);background:transparent;border:0;padding:0.5rem 0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem}.ds-seg__item+.ds-seg__item{border-left:2px solid var(--ink)}.ds-seg__item[data-active=\"true\"]{background:var(--ink);color:var(--ground)}.ds-seg__item:hover:not([data-active=\"true\"]){background:var(--hi);color:#04231b}.ds-seg__item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "sentiment-toggle",
+      "kind": "chip",
+      "refersTo": "components.sentiment-toggle",
+      "description": "The All / Liked / Disliked filter. Same welded-segment shape as the segmented control, but the active flood takes a semantic colour: Liked -> green with dark-ink text, Disliked -> red with white text.",
+      "html": "<div class=\"ds-toggle\" role=\"group\" aria-label=\"Filter by sentiment\"><button type=\"button\" class=\"ds-toggle__item\" data-active=\"true\">All</button><button type=\"button\" class=\"ds-toggle__item\" data-tone=\"like\"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 10.5V20H4.5A1.5 1.5 0 0 1 3 18.5v-6.5A1.5 1.5 0 0 1 4.5 10.5H7Z\"/><path d=\"M7 10.5 11 3.5a2 2 0 0 1 2.9 2.4L13 10.5h5.6a2 2 0 0 1 2 2.5l-1.6 6A2 2 0 0 1 17 20.5H7\"/></svg>Liked</button><button type=\"button\" class=\"ds-toggle__item\" data-tone=\"dislike\"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M17 13.5V4h2.5A1.5 1.5 0 0 1 21 5.5v6.5A1.5 1.5 0 0 1 19.5 13.5H17Z\"/><path d=\"M17 13.5 13 20.5a2 2 0 0 1-2.9-2.4L11 13.5H5.4a2 2 0 0 1-2-2.5l1.6-6A2 2 0 0 1 7 3.5h10\"/></svg>Disliked</button></div>",
+      "css": ".ds-toggle{display:inline-flex;border:2px solid var(--ink);border-radius:0}.ds-toggle__item{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.625rem;letter-spacing:0.11em;text-transform:uppercase;line-height:1;background:transparent;color:var(--ink);border:0;padding:0.5rem 0.8rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem}.ds-toggle__item svg{font-size:0.9rem;width:1em;height:1em}.ds-toggle__item+.ds-toggle__item{border-left:2px solid var(--ink)}.ds-toggle__item[data-active=\"true\"]{background:var(--ink);color:var(--ground)}.ds-toggle__item[data-active=\"true\"][data-tone=\"like\"]{background:var(--like);color:#04231b}.ds-toggle__item[data-active=\"true\"][data-tone=\"dislike\"]{background:var(--dislike);color:#fff}.ds-toggle__item:hover:not([data-active=\"true\"]){background:var(--hi);color:#04231b}.ds-toggle__item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "tagchip",
+      "kind": "chip",
+      "refersTo": "components.tagchip",
+      "description": "Aggregated tag facet. 2px ink box, mono-caps, square. Active floods ink/ground; hover (inactive) floods cyan.",
+      "html": "<button type=\"button\" class=\"ds-tagchip\" data-active=\"false\">command-palette</button>",
+      "css": ".ds-tagchip{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.625rem;letter-spacing:0.09em;text-transform:uppercase;line-height:1.3;padding:0.25rem 0.6rem;border:2px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);cursor:pointer}.ds-tagchip[data-active=\"true\"]{background:var(--ink);color:var(--ground)}.ds-tagchip:hover:not([data-active=\"true\"]){background:var(--hi);color:#04231b}.ds-tagchip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "field",
+      "kind": "input",
+      "refersTo": "components.field",
+      "description": "The 'uncap the pen' field. No box — a single 2px cobalt bottom border on a panel (or transparent) element. Focus removes the outline and washes the field with cyan at 12%. Rows pair a 5.5rem mono uppercase label with the control.",
+      "html": "<div class=\"ds-field-row\"><label class=\"ds-field-row__label\" for=\"ds-f-title\">Title</label><input id=\"ds-f-title\" class=\"ds-field\" value=\"Linear — command menu\"></div>",
+      "css": ".ds-field-row{display:flex;gap:0.5rem;align-items:baseline;margin:0.25rem 0}.ds-field-row__label{font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);min-width:5.5rem}.ds-field{font:inherit;font-family:\"Spectral\",Georgia,serif;color:var(--ink);background:var(--panel);border:0;border-bottom:2px solid var(--accent);border-radius:0;padding:0.15rem 0.25rem;width:100%}.ds-field:focus{outline:none;background:color-mix(in srgb, var(--hi) 12%, var(--panel))}.ds-field::placeholder{color:var(--ink-soft)}"
+    },
+    {
+      "name": "plate",
+      "kind": "card",
+      "refersTo": "components.plate",
+      "description": "Signature component. A screenshot mounted as a pinned plate: cover-fit image on a panel-2 backing, 1.5px keyline edge, cast shadow + 6px paper mat ring, resting -1.3deg tilt, a radial-gradient pushpin at top. On hover/focus it straightens to rotate(0), lifts 5px, and goes to the lift shadow. Disliked swaps the edge to 2.5px red, the outer mat ring to red, and the pushpin gradient to red.",
+      "html": "<span class=\"ds-plate-wrap\"><span class=\"ds-pin\" aria-hidden=\"true\"></span><img class=\"ds-plate\" src=\"screenshot.png\" alt=\"Screenshot: Linear — command menu\" data-rating=\"3\"></span>",
+      "css": ".ds-plate-wrap{position:relative;display:block}.ds-plate{display:block;width:100%;object-fit:cover;background:var(--panel-2);border:1.5px solid var(--keyline);border-radius:0;box-shadow:3px 6px 16px rgba(15,20,24,0.16),0 0 0 6px var(--panel),0 0 0 7.5px color-mix(in srgb, var(--ink) 18%, transparent);transform:rotate(-1.3deg);transition:transform 0.22s cubic-bezier(0.22,0.61,0.36,1),box-shadow 0.22s ease}.ds-plate[data-rating=\"3\"]{aspect-ratio:4/3}.ds-plate[data-rating=\"2\"]{aspect-ratio:16/11}.ds-plate[data-rating=\"1\"],.ds-plate[data-rating=\"0\"]{aspect-ratio:16/9}.ds-plate-wrap:hover .ds-plate,.ds-plate-wrap:focus-visible .ds-plate{transform:rotate(0) translateY(-5px);box-shadow:6px 12px 26px rgba(15,20,24,0.22),0 0 0 6px var(--panel),0 0 0 7.5px color-mix(in srgb, var(--ink) 18%, transparent)}.ds-pin{position:absolute;left:50%;top:-12px;width:17px;height:17px;transform:translateX(-50%);z-index:3;border-radius:50%;background:radial-gradient(circle at 34% 30%, #fff 0 12%, var(--accent) 15% 58%, color-mix(in srgb, var(--accent) 55%, #000) 60% 100%);box-shadow:0 2px 3px rgba(0,0,0,0.32)}.ds-pin::after{content:\"\";position:absolute;left:50%;top:90%;width:2px;height:8px;background:color-mix(in srgb, var(--ink) 45%, transparent);transform:translateX(-50%)}@media (prefers-reduced-motion: reduce){.ds-plate{transition-duration:0.001ms}}"
+    },
+    {
+      "name": "label-block",
+      "kind": "card",
+      "refersTo": "components.label-block",
+      "description": "The printed label under a plate — not a box. Panel background, a 3px sentiment ink-bar on the top edge only, no side or bottom border. Holds a thumb mark + Young Serif title, a mono meta line, and the italic Spectral opening clause of the User Note (clamped to 3 lines, opening to 9 when the piece ignites).",
+      "html": "<span class=\"ds-label\"><span class=\"ds-label__head\"><span class=\"ds-title\">Linear — command menu</span></span><span class=\"ds-meta\">LINEAR · DASHBOARD · 2026 · 08 · 27</span><span class=\"ds-clause\">“Cmd-K opens with zero layout shift and the results feel like they were already there.”</span></span>",
+      "css": ".ds-label{display:block;margin-top:1.4rem;padding:0.75rem 0.9rem 0.9rem;background:var(--panel);border-top:3px solid var(--like);border-radius:0}.ds-label[data-sentiment=\"negative\"]{border-top-color:var(--dislike)}.ds-label__head{display:flex;align-items:flex-start;gap:0.55rem;margin-bottom:0.35rem}.ds-title{font-family:\"Young Serif\",Georgia,serif;font-weight:400;font-size:1.5rem;line-height:1.06;color:var(--ink)}.ds-meta{display:block;font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.655rem;letter-spacing:0.03em;text-transform:uppercase;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-bottom:0.45rem}.ds-clause{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-family:\"Spectral\",Georgia,serif;font-style:italic;font-size:0.925rem;line-height:1.5;color:var(--ink)}"
+    },
+    {
+      "name": "note-lead",
+      "kind": "custom",
+      "refersTo": "components.note-lead",
+      "description": "Signature component. The User Note's opening clause — the one place running prose takes colour. Spectral italic 600 at poster scale, in cobalt-text, wrapped in typographic quotes, directly under the entry title and verdict pill. Followed by the note body in plain ink Spectral.",
+      "html": "<div class=\"ds-note\"><span class=\"ds-note__lead\">“Cmd-K opens with zero layout shift and the results feel like they were already there.”</span><p>Escape returns focus exactly to the cell I left, not the top of the page. The list fades under 90ms so it reads as revealed, not constructed.</p></div>",
+      "css": ".ds-note{font-family:\"Spectral\",Georgia,serif;font-size:1.14rem;line-height:1.62;color:var(--ink);max-width:66ch}.ds-note__lead{display:block;font-family:\"Spectral\",Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.16;margin-bottom:0.7rem;color:var(--accent-text)}.ds-note p{margin:0 0 0.9rem}.ds-note p:last-child{margin-bottom:0}"
+    },
+    {
+      "name": "verdict-pill",
+      "kind": "chip",
+      "refersTo": "components.verdict-pill",
+      "description": "The detail-view sentiment verdict ('Liked · return to this' / 'Disliked · never do this'). A square mono-caps block flooded with the sentiment colour — green with dark-ink text, or red with white text — sitting between the entry title and the note lead.",
+      "html": "<span class=\"ds-verdict ds-verdict--like\"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 10.5V20H4.5A1.5 1.5 0 0 1 3 18.5v-6.5A1.5 1.5 0 0 1 4.5 10.5H7Z\"/><path d=\"M7 10.5 11 3.5a2 2 0 0 1 2.9 2.4L13 10.5h5.6a2 2 0 0 1 2 2.5l-1.6 6A2 2 0 0 1 17 20.5H7\"/></svg>Liked · return to this</span>",
+      "css": ".ds-verdict{display:inline-flex;align-items:center;gap:0.45rem;font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.66rem;letter-spacing:0.13em;text-transform:uppercase;padding:0.35rem 0.65rem;border-radius:0}.ds-verdict svg{font-size:0.9rem;width:1em;height:1em}.ds-verdict--like{background:var(--like);color:#04231b}.ds-verdict--dislike{background:var(--dislike);color:#fff}"
+    },
+    {
+      "name": "later-hand",
+      "kind": "custom",
+      "refersTo": "components.headblock",
+      "description": "AI Interpretation as dated marginalia. A hanging-indent block set 2.75rem into the left margin, opened by a 1px dashed soft-ink rule, in Spectral italic soft-ink, under a mono uppercase cobalt-text header. Never overlaps or restyles the User Note above it.",
+      "html": "<div class=\"ds-laterhand\"><span class=\"ds-laterhand__head\">Later hand — AI Interpretation · 2026 · 08 · 28</span>Observed: overlay 560px wide · 92ms ease-out · backdrop blur 8px. Inferred pattern: positional continuity — the interface never loses the user’s place.</div>",
+      "css": ".ds-laterhand{margin:1.75rem 0 0 2.75rem;padding-top:0.85rem;border-top:1px dashed var(--ink-soft);color:var(--ink-soft);font-family:\"Spectral\",Georgia,serif;font-style:italic;font-size:0.95rem;line-height:1.55;text-indent:-2.75rem}.ds-laterhand__head{display:block;text-indent:0;font-style:normal;font-family:\"Spline Sans Mono\",ui-monospace,monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-text);margin-bottom:0.4rem}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Connoisseur's Gallery. Browsing your own taste is wandering a gallery you hung, not scanning a feed. Every judged web experience is a pinned plate — a screenshot with a thin ink keyline, a 6px paper mat, a soft blurred cast shadow, a real radial-gradient pushpin, and a 1–2° tilt — tacked to a calm, bright wall and arranged left-to-right by how much you mean it. The surface is printed, not rendered: riso/silkscreen ink, hard rules, a fixed grain overlay. The governing instinct is rules and ink, never boxes.",
+    "overview": "The personality is editorial and opinionated but never loud. Saturation is rationed: the wall ground stays quiet so screenshots and prose carry the contrast, and colour is spent only where it does work — the cobalt accent, the cyan hover, and the two theme-stable sentiment colours (green Liked, red Disliked). There are no card containers and no button chrome anywhere; structure is carried entirely by 2px ink rules, colour blocks, and a 3–4px sentiment ink-bar over each printed label. Corners are square throughout — the only curve in the whole system is the pushpin disc. Density is gallery-sparse, not dashboard-dense. Four columns of plates at desktop, hung at staggered heights, with generous air between rows (3.25rem / 1.875rem grid gaps). One authored motion carries the whole build: a piece ignites on hover or focus — it straightens, lifts ~5px, its label opens from 3 to 9 lines of the User Note, and the rest of the wall dims to context weight (~0.48). Everything else holds perfectly still. On the detail view, the exception to the colour discipline is deliberate: the User Note's opening clause is set at poster scale in saturated cobalt Spectral italic, because the Note is the whole point of the artefact.",
+    "keyCharacteristics": [
+      "Rules and ink, never boxes. Hard 2px --ink rules divide; active state floods an element with ink; zero card or button containers.",
+      "Squared corners everywhere (0 radius). The pushpin disc and the 6px kind dot are the only curves in the system.",
+      "Every screenshot is a mounted plate — 1.5px ink keyline, 6px --panel mat, --shadow-plate cast shadow, radial-gradient pushpin, 1–2° tilt.",
+      "Plate size rides rating, never sentiment — triple-diamond 4:3, double 16:11, single / none 16:9. The wall stratifies by strength of feeling.",
+      "Sentiment is semantic and theme-stable — green = Liked, red = Disliked, in both themes, and the only strong colour permitted on a plate.",
+      "Three real faces, one job each — Young Serif (display), Spectral (the User Note), Spline Sans Mono (labels, meta, controls).",
+      "Riso/silkscreen grain — one fixed radial-dot overlay, multiply in SLATE, screen in NOIR.",
+      "One authored moment — a piece ignites on hover/focus while the wall dims; full prefers-reduced-motion path.",
+      "SLATE (light, default use scene) / NOIR (dark, answers the OS). Theme follows prefers-color-scheme; [data-theme] and ?theme= override."
+    ],
+    "rules": [
+      { "name": "The Named-Role Rule", "body": "Every colour is one of seven print roles — ground, panel, ink, accent, highlight, like, dislike — doing real work. No candy accents, no fourth hue, no colour without a job.", "section": "Colors" },
+      { "name": "The Sentiment-Is-Semantic Rule", "body": "Green is Liked and red is Disliked, in both themes, always. Sentiment colour never shifts with the palette, and it is the only saturated colour allowed to touch a plate.", "section": "Colors" },
+      { "name": "The Ink-Not-Box Rule", "body": "Selection and active states flood an element with --ink (or its sentiment colour) and reverse the text to --ground. They never draw a new border and never raise a shadow.", "section": "Colors" },
+      { "name": "The Three-Faces Rule", "body": "Young Serif sets identity, Spectral speaks, Spline Sans Mono labels. A face never crosses into another face's job.", "section": "Typography" },
+      { "name": "The Monumental-Note Rule", "body": "The User Note's opening clause is set at poster scale in Spectral italic 600, --accent-text — the single place colour goes bold in running prose. No other text ever gets this treatment.", "section": "Typography" },
+      { "name": "The Mono-Caps Rule", "body": "Every control, meta line, badge, and caption is Spline Sans Mono, uppercase, letter-spaced at least 0.09em. Numbers in aligned contexts use tabular-nums; body prose uses oldstyle-nums.", "section": "Typography" },
+      { "name": "The Reading-Order Rule", "body": "The wall is a left-to-right, row-by-row grid (4 → 2 → 1). The scattered-hang feel is per-column margin-top offset plus per-plate tilt only. DOM order always equals reading order.", "section": "Layout" },
+      { "name": "The Rating-Stratifies Rule", "body": "Plate proportion is driven by rating alone (triple-diamond 4:3, double 16:11, single / none 16:9). Neither sentiment nor recency ever changes a plate's size.", "section": "Layout" },
+      { "name": "The Only-Plates-Lift Rule", "body": "Cast shadows belong to pinned plates (and the one modal dialog) only. Labels, headblocks, bands, buttons, and fields are flat — separated by 2px rules and colour, never by shadow.", "section": "Elevation & Depth" },
+      { "name": "The Ignite-Don't-Float Rule", "body": "On hover/focus a plate moves from --shadow-plate to --shadow-plate-lift and translateY(-5px) while straightening to rotate(0). That is the entire elevation change in the product; there is no resting hover-float and no parallax.", "section": "Elevation & Depth" },
+      { "name": "The Zero-Radius Rule", "body": "Every corner is square. The pushpin disc and the kind dot are the only permitted curves — introducing border-radius anywhere else breaks the print world.", "section": "Shapes" },
+      { "name": "The Rule-Weight Rule", "body": "Structural divisions are 2px solid --ink; plate edges are 1.5px --keyline; sentiment bars are 3–4px; anything derived or secondary is 1px dashed --ink-soft. Weights are not mixed arbitrarily.", "section": "Shapes" }
+    ],
+    "dos": [
+      "Do keep the wall ground calm (--ground) so screenshots and prose carry the contrast — spend saturation only on ink, labels, sentiment, and the cobalt accent.",
+      "Do divide with a hard 2px --ink rule.",
+      "Do flood active controls with --ink (or the sentiment colour) and reverse the text to --ground.",
+      "Do give every screenshot the full plate treatment: 1.5px --keyline edge, 6px --panel mat, --shadow-plate, a pushpin, and a 1–2° tilt.",
+      "Do size plates from rating only (triple-diamond 4:3, double 16:11, single / none 16:9).",
+      "Do mark a Disliked piece with exactly a red keyline + red pushpin + thumb-down, inline on the same wall.",
+      "Do keep every corner square (0 radius).",
+      "Do set the User Note lead at poster scale in cobalt Spectral italic 600.",
+      "Do keep AI Interpretation visually subordinate — 1px dashed rule, muted ink, 2.75rem margin indent, dated mono header.",
+      "Do keep the segmented look literal: buttons welded inside one 2px frame, divided by 2px border-left, no gaps, no outer radius.",
+      "Do ship exactly one authored motion — the ignite (straighten + lift + label-open + wall-dim to ~0.48) — and gate the wall-dim to (hover: hover) and (pointer: fine).",
+      "Do write every control, meta line, and badge in Spline Sans Mono, uppercase, tracked at least 0.09em.",
+      "Do write TasteVault as one word, capital T and V, with Vault in --accent."
+    ],
+    "donts": [
+      "Don't add a fourth hue or a decorative accent. kind is a 6px palette-derived dot, never a fill and never a new colour.",
+      "Don't wrap anything in a bordered or rounded card — the label and headblock are printed panels with a top ink-bar, not boxes.",
+      "Don't outline an active control or give it a drop shadow.",
+      "Don't render a bare image, a zero-tilt plate, or a plate without a pushpin.",
+      "Don't let sentiment or recency change a plate's size.",
+      "Don't add a corner chip, or dim / hide / silo a Disliked piece — the corner chip was tried and rejected for drowning the positives.",
+      "Don't introduce border-radius anywhere except the pushpin disc and the kind dot.",
+      "Don't apply the colour-in-prose treatment to any text other than the User Note lead, and don't colour the User Note body.",
+      "Don't let the 'later hand' touch, overlap, or restyle the User Note.",
+      "Don't space segment buttons apart or round the group.",
+      "Don't add incidental transitions, entrance animations, parallax, or a resting hover-float; honour prefers-reduced-motion by dropping the transform.",
+      "Don't introduce a sans-serif anywhere, and don't set body prose in anything but Spectral.",
+      "Don't describe the Portal by comparison to any other product."
+    ]
+  }
+}

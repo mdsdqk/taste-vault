@@ -291,7 +291,7 @@ field may be missing.
 - On-disk format and graceful degradation as in §4.
 - No comparison positioning; CONTEXT.md terms verbatim.
 
-**Resolved through mockup iteration (see `docs/design/.scratch/logbook.html`):**
+**Resolved through mockup iteration:**
 - Palette: SLATE (light) / NOIR (dark), values in §3.
 - Type faces: Young Serif / Spectral / Spline Sans Mono (confirm at build).
 - Plate size ← `rating` only (◆◆◆/◆◆/◆ → large/medium/small).

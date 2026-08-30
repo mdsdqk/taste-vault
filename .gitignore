@@ -50,3 +50,11 @@ Thumbs.db
 .codex/
 .cursor/
 .grok/
+
+# --- Impeccable design tooling ------------------------------------------------
+# config.json (shared detector settings) and design.json (DESIGN.md sidecar)
+# are tracked; everything else under .impeccable/ is transient.
+.impeccable/review/
+.impeccable/hook.cache.json
+.impeccable/questions/
+.impeccable/config.local.json

@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* self-hosted faces — the committed lettering, not a CDN */
+@import "@fontsource/young-serif/400.css";
+@import "@fontsource/spectral/400.css";
+@import "@fontsource/spectral/400-italic.css";
+@import "@fontsource/spectral/600.css";
+@import "@fontsource/spectral/600-italic.css";
+@import "@fontsource/spline-sans-mono/400.css";
+@import "@fontsource/spline-sans-mono/500.css";
+@import "@fontsource/spline-sans-mono/600.css";
+
+/* =========================================================================
+   THEME — SLATE (light) / NOIR (dark)
+   Light is the default use scene: a developer at a desk in daylight, judging
+   screenshots that need a calm bright wall behind them. NOIR answers the OS.
+   Sentiment is semantic and theme-stable: green = liked, red = disliked.
+   ========================================================================= */
+
+:root {
+  --ground: #e6eaee;
+  --panel: #ffffff;
+  --panel-2: #eef1f4;
+  --ink: #0f1418;
+  --ink-soft: #48515a;
+  --accent: #1452ff;
+  --accent-text: #1247e0;
+  --hi: #0bb6c9;
+  --keyline: #0f1418;
+  --grain: rgba(15, 20, 24, 0.05);
+
+  --like: #0aa259;
+  --like-tint: #dcf4e8;
+  --dislike: #e11d34;
+  --dislike-tint: #ffe1e3;
+
+  --shadow-plate: 3px 6px 16px rgba(15, 20, 24, 0.16);
+  --shadow-plate-lift: 6px 12px 26px rgba(15, 20, 24, 0.22);
+  --shadow-pin: 0 2px 3px rgba(0, 0, 0, 0.32);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0f1215;
+    --panel: #1c2128;
+    --panel-2: #262c34;
+    --ink: #f1f4f6;
+    --ink-soft: #9aa6b2;
+    --accent: #2f6bff;
+    --accent-text: #7ea3ff;
+    --hi: #22e6c8;
+    --keyline: #2b333c;
+    --grain: rgba(255, 255, 255, 0.035);
+
+    --like: #26d47e;
+    --like-tint: #12281f;
+    --dislike: #ff4b60;
+    --dislike-tint: #331a1e;
+
+    --shadow-plate: 3px 6px 18px rgba(0, 0, 0, 0.5);
+    --shadow-plate-lift: 6px 12px 30px rgba(0, 0, 0, 0.62);
+    --shadow-pin: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground: #0f1215;
+  --panel: #1c2128;
+  --panel-2: #262c34;
+  --ink: #f1f4f6;
+  --ink-soft: #9aa6b2;
+  --accent: #2f6bff;
+  --accent-text: #7ea3ff;
+  --hi: #22e6c8;
+  --keyline: #2b333c;
+  --grain: rgba(255, 255, 255, 0.035);
+  --like: #26d47e;
+  --like-tint: #12281f;
+  --dislike: #ff4b60;
+  --dislike-tint: #331a1e;
+  --shadow-plate: 3px 6px 18px rgba(0, 0, 0, 0.5);
+  --shadow-plate-lift: 6px 12px 30px rgba(0, 0, 0, 0.62);
+  --shadow-pin: 0 2px 4px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Spectral", Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.55;
+  font-variant-numeric: oldstyle-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* riso grain — one fixed multiply layer over the whole wall */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: radial-gradient(var(--grain) 1px, transparent 1px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="dark"] body::before {
+  mix-blend-mode: screen;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::before {
+    mix-blend-mode: screen;
+  }
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================================================
+   BROWSER SURFACES — parts we did not draw still carry the design
+   ========================================================================= */
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:root {
+  caret-color: var(--accent);
+  accent-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* keyboard-only focus ring; pointer focus stays quiet */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-soft) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-soft) 60%, transparent);
+  border: 2px solid var(--ground);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-soft);
+}
+
+a {
+  color: var(--accent-text);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
