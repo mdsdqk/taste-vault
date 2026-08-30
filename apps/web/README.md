@@ -23,23 +23,20 @@ override lives in the topbar and via `?theme=light|dark`.
 
 ## Data
 
-Runs entirely on an in-memory **fixture Vault** (`src/lib/fixtures.ts`), mirrored
-to `localStorage` so edits/removals survive a reload. `src/lib/api.ts` is the
-seam the future Fastify scan/watch server + SSE (PRD §5) drops in behind, with
-no component changes. `src/lib/normalize.ts` holds the graceful-degradation
-fallbacks (ADR 0001) — nothing is required, every gap has a fallback.
+`src/lib/api.ts` talks to `apps/server` (the Fastify scan/watch + write API +
+SSE, PRD §5) over `/api` — proxied to `:5174` by Vite in `pnpm dev`, same-origin
+under `pnpm start`. It fetches `RawReference` and runs it through
+`src/lib/normalize.ts`, which holds the graceful-degradation fallbacks (ADR
+0001) — nothing is required, every gap has a fallback. `subscribe()` is an
+`EventSource` on `GET /api/events`; the wall re-reads on every `change`.
+
+With no server (or an empty Vault) the Portal shows its first-run empty state
+rather than erroring. Add References with `pnpm new-ref` or in place via the
+detail view.
 
 Screenshots for design review: `node scripts/shoot.mjs [baseUrl]` (needs Chrome;
 set `CHROME_PATH` if it's not at the default Windows location).
 
-## Data source
-
-`src/lib/api.ts` still runs on the in-memory fixture Vault. The real
-`apps/server` (Fastify scan/watch + write API + SSE) now exists — wiring
-`api.ts`'s calls to it (`GET/POST/PATCH/DELETE /api/references…`, `GET
-/api/events`) is the remaining step.
-
 ## Not yet built (follow-ups)
 
-- Point `src/lib/api.ts` at `apps/server` instead of the fixtures.
 - The dense ledger view (deferred; the toggle renders but is stubbed).

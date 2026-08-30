@@ -227,6 +227,7 @@ export async function registerWriteRoutes(
         app.log.warn(`OS trash failed for ${slug} (${(err as Error).message}) — removing directly`);
         await fs.rm(target, { recursive: true, force: true });
       }
+      await vault.forceRefresh(); // .trash is unwatched — nudge SSE so clients refetch /api/removed
       return reply.code(204).send();
     },
   );

@@ -1,71 +1,50 @@
 import type { RawReference, Reference } from "./types";
 import { normalize } from "./normalize";
-import { FIXTURES } from "./fixtures";
 
 /**
- * The data seam. Every call is async and returns normalised `Reference`s so a
- * real transport (the Fastify scan/watch server + SSE, per PRD §5) can drop in
- * behind this file with no change to the components.
+ * The data seam. Talks to the Fastify scan/watch server (`apps/server`, PRD §5)
+ * over `/api` — proxied to `:5174` by Vite in `pnpm dev`, same-origin in
+ * `pnpm start`.
  *
- * Until that server exists the Portal runs on the fixture Vault, held in memory
- * and mirrored to localStorage so edits and removals survive a reload.
+ * Reads degrade gracefully: if the server is unreachable the Portal shows an
+ * empty Vault and its first-run state rather than an error screen — it is a
+ * view library, not a system to fail on (ADR 0001). Writes reject so the caller
+ * can surface the failure.
+ *
+ * The server returns `RawReference` (disk shape); `normalize()` fills every gap
+ * here, so components only ever see a resolved `Reference`.
  */
 
-const STORE_KEY = "tastevault:store:v1";
+const API = "/api";
 
-interface Store {
-  live: RawReference[];
-  removed: RawReference[];
-}
-
-function load(): Store {
+async function readJSON<T>(path: string, fallback: T): Promise<T> {
   try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) return JSON.parse(raw) as Store;
-  } catch {
-    /* private mode / blocked storage — fall through to seed */
-  }
-  return { live: structuredClone(FIXTURES), removed: [] };
-}
-
-function persist(store: Store): void {
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(store));
-  } catch {
-    /* nothing to do — in-memory store still works for this session */
+    const res = await fetch(`${API}${path}`, {
+      headers: { accept: "application/json" },
+    });
+    if (!res.ok) {
+      if (res.status !== 404) console.warn(`GET ${path} → ${res.status}`);
+      return fallback;
+    }
+    return (await res.json()) as T;
+  } catch (err) {
+    console.warn(`GET ${path} failed — is apps/server running?`, err);
+    return fallback;
   }
 }
 
-let store: Store = load();
-
-const listeners = new Set<() => void>();
-function emit(): void {
-  persist(store);
-  listeners.forEach((fn) => fn());
+async function write<T>(method: string, path: string, body?: unknown): Promise<T> {
+  const res = await fetch(`${API}${path}`, {
+    method,
+    headers: body === undefined ? undefined : { "content-type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`${method} ${path} → ${res.status}`);
+  if (res.status === 204) return undefined as T;
+  return (await res.json()) as T;
 }
 
-/** Subscribe to Vault changes. Stands in for the SSE stream from the server. */
-export function subscribe(fn: () => void): () => void {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
-}
-
-const settle = <T>(value: T): Promise<T> =>
-  new Promise((r) => setTimeout(() => r(value), 90));
-
-export async function listReferences(): Promise<Reference[]> {
-  return settle(store.live.map(normalize));
-}
-
-export async function getReference(slug: string): Promise<Reference | null> {
-  const raw = store.live.find((r) => r.slug === slug);
-  return settle(raw ? normalize(raw) : null);
-}
-
-export async function listRemoved(): Promise<Reference[]> {
-  return settle(store.removed.map(normalize));
-}
-
+/** Edits the detail view sends. `null` / `""` clears the field on disk. */
 export interface ReferenceEdits {
   title?: string;
   url?: string | null;
@@ -77,97 +56,80 @@ export interface ReferenceEdits {
   noteText?: string;
 }
 
+export async function listReferences(): Promise<Reference[]> {
+  const raw = await readJSON<RawReference[]>("/references", []);
+  return raw.map(normalize);
+}
+
+export async function getReference(slug: string): Promise<Reference | null> {
+  const raw = await readJSON<RawReference | null>(
+    `/references/${encodeURIComponent(slug)}`,
+    null,
+  );
+  return raw ? normalize(raw) : null;
+}
+
+export async function listRemoved(): Promise<Reference[]> {
+  const raw = await readJSON<RawReference[]>("/removed", []);
+  return raw.map(normalize);
+}
+
 export async function updateReference(
   slug: string,
   edits: ReferenceEdits,
 ): Promise<Reference> {
-  const raw = store.live.find((r) => r.slug === slug);
-  if (!raw) throw new Error(`No Reference ${slug}`);
-  const fm = { ...(raw.frontmatter ?? {}) };
-  if (edits.title !== undefined) fm.title = edits.title;
-  if (edits.url !== undefined) fm.url = edits.url ?? undefined;
-  if (edits.kind !== undefined) fm.kind = edits.kind ?? undefined;
-  if (edits.sentiment !== undefined) fm.sentiment = edits.sentiment;
-  if (edits.rating !== undefined) fm.rating = edits.rating ?? undefined;
-  if (edits.tags !== undefined) fm.tags = edits.tags;
-  if (edits.surface !== undefined) fm.surface = edits.surface ?? undefined;
-  raw.frontmatter = fm;
-  if (edits.noteText !== undefined) {
-    raw.noteText = edits.noteText;
-    raw.noteHtml = edits.noteText
-      ? `<p>${escapeHtml(edits.noteText).replace(/\n\n+/g, "</p><p>")}</p>`
-      : "";
-  }
-  emit();
+  const raw = await write<RawReference>(
+    "PATCH",
+    `/references/${encodeURIComponent(slug)}`,
+    edits,
+  );
   return normalize(raw);
-}
-
-function slugify(title: string): string {
-  const base =
-    title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 60) || "reference";
-  const date = new Date().toISOString().slice(0, 10);
-  let slug = `${base}-${date}`;
-  let n = 2;
-  while (
-    store.live.some((r) => r.slug === slug) ||
-    store.removed.some((r) => r.slug === slug)
-  ) {
-    slug = `${base}-${date}-${n++}`;
-  }
-  return slug;
 }
 
 /** Create a blank mount. A half-filled Reference is valid — no gate. */
 export async function createReference(): Promise<Reference> {
-  const slug = slugify("untitled reference");
-  const raw: RawReference = {
-    slug,
-    folderModified: new Date().toISOString(),
-    images: [],
-    frontmatter: { saved: new Date().toISOString().slice(0, 10) },
-    noteHtml: "",
-    noteText: "",
-  };
-  store.live = [raw, ...store.live];
-  emit();
+  const raw = await write<RawReference>("POST", "/references", {});
   return normalize(raw);
 }
 
 export async function removeReference(slug: string): Promise<void> {
-  const idx = store.live.findIndex((r) => r.slug === slug);
-  if (idx === -1) return;
-  const [raw] = store.live.splice(idx, 1);
-  store.removed = [{ ...raw }, ...store.removed];
-  emit();
+  await write<void>("DELETE", `/references/${encodeURIComponent(slug)}`);
 }
 
 export async function restoreReference(slug: string): Promise<void> {
-  const idx = store.removed.findIndex((r) => r.slug === slug);
-  if (idx === -1) return;
-  const [raw] = store.removed.splice(idx, 1);
-  store.live = [raw, ...store.live];
-  emit();
+  await write<void>("POST", `/removed/${encodeURIComponent(slug)}/restore`);
 }
 
-/** Permanently delete — in the real Portal this routes the folder to OS trash. */
+/** Permanently delete — the server routes the folder to the OS trash. */
 export async function purgeReference(slug: string): Promise<void> {
-  store.removed = store.removed.filter((r) => r.slug !== slug);
-  emit();
+  await write<void>("DELETE", `/removed/${encodeURIComponent(slug)}`);
 }
 
-/** Reset to the pristine fixture Vault (dev affordance). */
-export async function resetVault(): Promise<void> {
-  store = { live: structuredClone(FIXTURES), removed: [] };
-  emit();
+/* ---- live updates: the server's SSE stream (`GET /api/events`) ---- */
+
+const listeners = new Set<() => void>();
+let stream: EventSource | null = null;
+
+function openStream(): void {
+  if (stream || typeof EventSource === "undefined") return;
+  stream = new EventSource(`${API}/events`);
+  const fire = (): void => listeners.forEach((fn) => fn());
+  // `change` on every debounced Vault edit; `ready` on (re)connect, so the
+  // Portal also refreshes after the stream drops and comes back.
+  stream.addEventListener("change", fire);
+  stream.addEventListener("ready", fire);
+  // EventSource reconnects on its own; nothing to do on error.
 }
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+/** Subscribe to Vault changes. Returns an unsubscribe function. */
+export function subscribe(fn: () => void): () => void {
+  listeners.add(fn);
+  openStream();
+  return () => {
+    listeners.delete(fn);
+    if (listeners.size === 0 && stream) {
+      stream.close();
+      stream = null;
+    }
+  };
 }
