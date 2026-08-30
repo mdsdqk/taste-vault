@@ -30,11 +30,11 @@ library, before building any capture automation.
   text search, default sort `saved` desc; negative References shown inline with a
   badge) and **Reference detail** view (all screenshots, identity fields,
   rendered User Note). Client-side fuzzy search over title + tags + note.
-- `scripts/new-reference.ts` — `pnpm new` scaffolds a well-formed Reference
+- `scripts/new-ref.ts` — `pnpm new-ref` scaffolds a well-formed Reference
   folder; asks whether it is a negative Reference (default no). A convenience,
   never a gate.
 - Workspace: `pnpm-workspace.yaml` (`apps/*`). Root `pnpm dev` / `pnpm start` /
-  `pnpm new`. Node 22, `tsx`, TS strict, MIT license.
+  `pnpm new-ref`. Node 22, `tsx`, TS strict, MIT license.
 
 **Follow-up:** a dedicated visual-design pass on the Portal with the `impeccable`
 skill, once the functional build lands.

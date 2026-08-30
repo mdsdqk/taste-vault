@@ -19,11 +19,11 @@ Agents read `AGENTS.md` in this folder to learn that both poles exist.
 **The easy way:** from the repo root run
 
 ```
-pnpm new
+pnpm new-ref
 ```
 
-It asks for a title, URL, kind, and tags, then creates a well-formed folder for
-you.
+It asks for a title, URL, kind, and tags (and whether this is a negative
+Reference), then creates a well-formed folder for you. Every answer is optional.
 
 **By hand:** make a directory named `<slug>-<YYYY-MM-DD>`, drop in one or more
 screenshots, and optionally add a `reference.md`:

@@ -32,8 +32,14 @@ fallbacks (ADR 0001) — nothing is required, every gap has a fallback.
 Screenshots for design review: `node scripts/shoot.mjs [baseUrl]` (needs Chrome;
 set `CHROME_PATH` if it's not at the default Windows location).
 
+## Data source
+
+`src/lib/api.ts` still runs on the in-memory fixture Vault. The real
+`apps/server` (Fastify scan/watch + write API + SSE) now exists — wiring
+`api.ts`'s calls to it (`GET/POST/PATCH/DELETE /api/references…`, `GET
+/api/events`) is the remaining step.
+
 ## Not yet built (follow-ups)
 
-- The Fastify `apps/server` scan/watch server + real SSE live-update.
-- `scripts/new-reference.ts` (`pnpm new`) scaffold.
+- Point `src/lib/api.ts` at `apps/server` instead of the fixtures.
 - The dense ledger view (deferred; the toggle renders but is stubbed).

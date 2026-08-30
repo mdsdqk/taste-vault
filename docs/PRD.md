@@ -209,7 +209,7 @@ references/  ──scan+watch──▶  apps/server (Fastify + TS)  ──/api�
   identity fields, rendered User Note). Client-side fuzzy search over title +
   tags + note text.
 - **`apps/extension`** — empty stub; Phase 2.
-- **Scaffold script** — root `pnpm new` → `scripts/new-reference.ts` (tsx).
+- **Scaffold script** — root `pnpm new-ref` → `scripts/new-ref.ts` (tsx).
   Prompts for title / url / kind / tags and whether this is a negative Reference
   (default no), computes `<slug>-<today>`, creates the folder with a pre-filled
   `reference.md` (`sentiment: negative` written only when chosen), prints the
@@ -221,7 +221,7 @@ references/  ──scan+watch──▶  apps/server (Fastify + TS)  ──/api�
   only when a shared package actually exists (shared types live in `apps/web`
   for now).
 - Root scripts: `pnpm dev` (server + web with HMR), `pnpm start` (server builds
-  and serves the static Portal on a single port — the everyday mode), `pnpm new`.
+  and serves the static Portal on a single port — the everyday mode), `pnpm new-ref`.
 - Ports: server `5174`, Vite `5173` proxying `/api` → server.
 - Baseline: Node 22 LTS, `tsx`, TypeScript `strict`.
 - License: MIT.

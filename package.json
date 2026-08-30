@@ -8,6 +8,8 @@
     "start": "pnpm --filter @taste-vault/web build && pnpm --filter @taste-vault/server start",
     "build": "pnpm --filter @taste-vault/web build",
     "preview": "pnpm --filter @taste-vault/web preview",
+    "new-ref": "tsx scripts/new-ref.ts",
+    "new": "tsx scripts/new-ref.ts",
     "typecheck": "pnpm -r typecheck",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +27,7 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "puppeteer-core": "^23.11.1",
+    "tsx": "^4.19.2",
     "typescript": "^7.0.2"
   }
 }

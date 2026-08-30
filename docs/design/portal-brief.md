@@ -199,7 +199,7 @@ gallery↔ledger toggle renders but is stubbed (ledger deferred).
 **Must remain untouched:**
 - The on-disk format: whatever the Portal writes is exactly the
   `<slug>-<YYYY-MM-DD>/` + optional `reference.md` (YAML + Markdown body) + image
-  files layout, so manual, scaffold (`pnpm new`), and future extension authoring
+  files layout, so manual, scaffold (`pnpm new-ref`), and future extension authoring
   stay interchangeable.
 - Graceful degradation (ADR 0001): no schema validation, no required-field
   enforcement, no blocking error surface. A half-filled or malformed Reference

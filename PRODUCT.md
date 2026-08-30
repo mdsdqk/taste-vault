@@ -78,7 +78,7 @@ could not truthfully claim:
   whole site, a page, a component, an interaction, a transition, an animation, a
   responsive behaviour, or a UX pattern.
 - **Phase 1 capture is manual** — the user places files by hand or runs
-  `pnpm new` (`scripts/new-reference.ts`), a scaffold that produces a well-formed
+  `pnpm new-ref` (`scripts/new-ref.ts`), a scaffold that produces a well-formed
   folder. The scaffold is a convenience, never a gate. Later phases automate
   capture via a browser extension.
 - **The Portal** has two views: **Library** (grid of covers; filter bar =

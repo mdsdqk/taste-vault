@@ -69,7 +69,7 @@ not a new type, phase, or storage location.
 - The Portal shows negative References **inline** in the Library grid with a
   badge, and a filter facet to isolate or exclude them. `tags` share one facet
   across both poles; the badge disambiguates.
-- The scaffold (`pnpm new`) gains an optional `sentiment` prompt, defaulting to
+- The scaffold (`pnpm new-ref`) gains an optional `sentiment` prompt, defaulting to
   positive. It remains a convenience, never a gate.
 - Teaching generation skills (e.g. Impeccable) to actively *weight* negatives at
   generation time is **out of scope** here; this ADR delivers the TasteVault-side

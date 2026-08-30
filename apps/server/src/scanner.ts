@@ -5,9 +5,13 @@ import { renderNote } from "./markdown.js";
 import type { RawReference } from "./types.js";
 
 /**
- * Read the Vault off disk. Nothing here throws on bad input: a folder that
- * cannot be read, or a `reference.md` with broken YAML, still produces a listed
- * Reference (ADR 0001). Problems are collected as warnings for the caller to log.
+ * Read a directory of Reference folders off disk. Nothing here throws on bad
+ * input: a folder that cannot be read, or a `reference.md` with broken YAML,
+ * still produces a listed Reference (ADR 0001). Problems are collected as
+ * warnings for the caller to log.
+ *
+ * `urlPrefix` is prepended to each image path — `/api/references` for the live
+ * Vault, `/api/removed` for `.trash/`.
  */
 
 const IMAGE_EXT = new Set([
@@ -25,17 +29,13 @@ function coerceFrontmatter(data: unknown): Record<string, unknown> {
     : {};
 }
 
-export interface ScanResult {
-  references: RawReference[];
-  warnings: string[];
-}
-
-async function readReference(
-  referencesDir: string,
+export async function readReference(
+  rootDir: string,
   name: string,
+  urlPrefix: string,
   warnings: string[],
 ): Promise<RawReference | null> {
-  const dir = path.join(referencesDir, name);
+  const dir = path.join(rootDir, name);
 
   let stat;
   try {
@@ -57,7 +57,7 @@ async function readReference(
     .sort((a, b) => a.localeCompare(b))
     .map(
       (file) =>
-        `/api/references/${encodeURIComponent(name)}/${encodeURIComponent(file)}`,
+        `${urlPrefix}/${encodeURIComponent(name)}/${encodeURIComponent(file)}`,
     );
 
   let frontmatter: Record<string, unknown> | null = {};
@@ -89,16 +89,22 @@ async function readReference(
   };
 }
 
-export async function scan(referencesDir: string): Promise<ScanResult> {
+export interface ScanResult {
+  references: RawReference[];
+  warnings: string[];
+}
+
+export async function scanDir(
+  rootDir: string,
+  urlPrefix: string,
+): Promise<ScanResult> {
   const warnings: string[] = [];
 
   let dirents;
   try {
-    dirents = await fs.readdir(referencesDir, { withFileTypes: true });
+    dirents = await fs.readdir(rootDir, { withFileTypes: true });
   } catch {
-    warnings.push(
-      `references directory not found at ${referencesDir} — serving an empty Vault`,
-    );
+    warnings.push(`directory not found at ${rootDir} — treating as empty`);
     return { references: [], warnings };
   }
 
@@ -107,7 +113,7 @@ export async function scan(referencesDir: string): Promise<ScanResult> {
     .map((d) => d.name);
 
   const results = await Promise.all(
-    names.map((name) => readReference(referencesDir, name, warnings)),
+    names.map((name) => readReference(rootDir, name, urlPrefix, warnings)),
   );
 
   const references = results
@@ -116,4 +122,9 @@ export async function scan(referencesDir: string): Promise<ScanResult> {
     .sort((a, b) => b.slug.localeCompare(a.slug));
 
   return { references, warnings };
+}
+
+/** The live Vault. */
+export function scan(referencesDir: string): Promise<ScanResult> {
+  return scanDir(referencesDir, "/api/references");
 }

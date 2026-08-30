@@ -32,6 +32,12 @@ export class Vault extends EventEmitter {
     return this.cache.find((r) => r.slug === slug);
   }
 
+  /** Re-scan now and broadcast a `"change"`. Called after a disk write so the
+   *  response and the SSE stream don't wait on the watch debounce. */
+  async forceRefresh(): Promise<void> {
+    await this.refresh(true);
+  }
+
   async start(): Promise<void> {
     await this.refresh(false);
 

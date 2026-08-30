@@ -1,9 +1,11 @@
 # @taste-vault/server — the scan/watch server
 
-The read layer between the **Vault** (`references/`) and the **Portal**
-(`apps/web`). It scans and watches the Vault, parses `reference.md` frontmatter,
-renders the User Note to sanitised HTML, and serves a JSON API, the raw asset
-files, and an SSE stream so the Portal live-updates as folders change. PRD §5.
+The layer between the **Vault** (`references/`) and the **Portal** (`apps/web`).
+It scans and watches the Vault, parses `reference.md` frontmatter, renders the
+User Note to sanitised HTML, serves a JSON API, the raw asset files, and an SSE
+stream so the Portal live-updates as folders change, and writes edits back to
+disk in the same on-disk format a hand author or the `pnpm new-ref` scaffold
+would produce. PRD §5.
 
 Fastify + TypeScript, run with `tsx`. It never fails on bad input — a missing or
 malformed `reference.md` still produces a listed Reference (ADR 0001).
@@ -16,6 +18,8 @@ pnpm start                 # build the Portal, then serve it + the API on :5174
 
 ## Endpoints
 
+### Read
+
 | Method + path | Returns |
 |---|---|
 | `GET /api/references` | `RawReference[]` — the whole Vault |
@@ -24,10 +28,29 @@ pnpm start                 # build the Portal, then serve it + the API on :5174
 | `GET /api/events` | `text/event-stream`; an `event: change` per debounced batch of Vault changes |
 | `GET /api/health` | `{ ok, referencesDir, count }` |
 
+### Write
+
+| Method + path | Body | Effect |
+|---|---|---|
+| `POST /api/references` | `{ title?, url?, kind?, sentiment?, rating?, tags?, surface?, noteText? }` (all optional) | creates `references/<slug>-<today>/reference.md`; returns the new `RawReference` (`201`) |
+| `PATCH /api/references/:slug` | `ReferenceEdits` — same fields; `null`/`""` clears a field | merges into `reference.md` (frontmatter + body), returns the updated `RawReference` |
+| `DELETE /api/references/:slug` | — | moves the folder to `references/.trash/`; `204` |
+| `GET /api/removed` | — | `RawReference[]` from `.trash/` (images under `/api/removed/:slug/:file`) |
+| `GET /api/removed/:slug/:file` | — | a raw asset file from a removed Reference |
+| `POST /api/removed/:slug/restore` | — | moves the folder back into `references/`, returns the restored `RawReference` |
+| `DELETE /api/removed/:slug` | — | permanently deletes — routes the folder to the OS trash; `204`, idempotent |
+
 `RawReference` matches `apps/web/src/lib/types.ts` field-for-field, so
-`apps/web/src/lib/api.ts` drops in behind it with no component changes. The one
-difference from a bare disk read: `images` are already resolved to
+`apps/web/src/lib/api.ts` drops in behind these with no component changes. The
+one difference from a bare disk read: `images` are already resolved to
 `/api/references/:slug/:file` URLs.
+
+Writes never validate field *values* (ADR 0001) — a half-filled Reference is
+allowed. `sentiment: positive` is written as the *absence* of the field
+(ADR 0002). Frontmatter is re-emitted in the canonical key order
+(`title, url, source, kind, saved, sentiment, rating, tags, surface`), tags
+inline. A `reference.md` with unparseable YAML is renamed to `*.bak-<ts>` before
+a fresh one is written, so nothing is silently lost.
 
 ### Degradation
 
@@ -52,11 +75,18 @@ difference from a bare disk read: `images` are already resolved to
 
 ```
 src/
-├── index.ts     entry — load config, build server, listen, handle signals
-├── config.ts    env + flags → Config
-├── server.ts    Fastify instance: routes, asset serving, SSE, SPA fallback
-├── vault.ts     in-memory scan kept fresh by a chokidar watch; emits "change"
-├── scanner.ts   references/ → RawReference[] + warnings (never throws)
-├── markdown.ts  User Note → sanitised HTML (markdown-it + sanitize-html)
-└── types.ts     RawReference (mirrors the Portal's wire model)
+├── index.ts        entry — load config, build server, listen, handle signals
+├── config.ts       env + flags → Config
+├── server.ts       Fastify instance: read routes, asset serving, SSE, SPA fallback
+├── write-routes.ts create / amend / remove / restore / purge
+├── vault.ts        in-memory scan kept fresh by a chokidar watch; emits "change"
+├── scanner.ts      a folder of References → RawReference[] + warnings (never throws)
+├── reference-md.ts the shared reference.md merge + serialise (also used by pnpm new-ref)
+├── markdown.ts     User Note → sanitised HTML (markdown-it + sanitize-html)
+├── util.ts         path-segment guard
+└── types.ts        RawReference (mirrors the Portal's wire model)
 ```
+
+The `pnpm new-ref` scaffold (`scripts/new-ref.ts` at the repo root) imports
+`reference-md.ts` directly, so a scaffolded folder and a Portal-written one are
+byte-identical in format.

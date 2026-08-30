@@ -4,19 +4,8 @@ import Fastify, { type FastifyInstance } from "fastify";
 import fastifyStatic from "@fastify/static";
 import type { Config } from "./config.js";
 import { Vault } from "./vault.js";
-
-/** one path segment, no traversal, no dotfiles */
-function isSafeSegment(seg: string): boolean {
-  return (
-    seg.length > 0 &&
-    !seg.includes("/") &&
-    !seg.includes("\\") &&
-    !seg.includes("\0") &&
-    seg !== "." &&
-    seg !== ".." &&
-    !seg.startsWith(".")
-  );
-}
+import { registerWriteRoutes } from "./write-routes.js";
+import { isSafeSegment } from "./util.js";
 
 export async function buildServer(config: Config): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
@@ -76,6 +65,9 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
       );
     },
   );
+
+  // Create, amend, remove → .trash/, list removed, restore, permanently delete.
+  await registerWriteRoutes(app, vault, config);
 
   // Live update: one event per debounced batch of Vault changes.
   app.get("/api/events", (req, reply) => {

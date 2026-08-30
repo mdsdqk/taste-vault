@@ -11,7 +11,7 @@ empty defaults) rather than rejecting the folder. We chose this over a strict
 schema with fail-loud validation because TasteVault is a personal view library,
 not a mission-critical system: a typo in hand-authored frontmatter should never
 hide a saved Reference or stop the Portal from opening. The scaffold script
-(`pnpm new`) produces well-formed folders as a convenience, but it is never a
+(`pnpm new-ref`) produces well-formed folders as a convenience, but it is never a
 gate.
 
 ## Consequences
