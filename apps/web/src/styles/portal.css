@@ -35,7 +35,7 @@
 }
 .seg > * {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink);
@@ -64,7 +64,7 @@
   color: #04231b;
 }
 .seg svg {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 .topbar__right {
   display: flex;
@@ -73,7 +73,7 @@
 }
 .topbar__right .btn {
   padding: 0.5rem 0.85rem;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
 }
 
 /* ---- masthead ---------------------------------------------------------------- */
@@ -96,7 +96,7 @@
 }
 .standfirst {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -121,7 +121,7 @@
 }
 .toggle button {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   background: transparent;
@@ -150,7 +150,7 @@
   color: #fff;
 }
 .toggle button svg {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .search {
@@ -187,7 +187,7 @@
   gap: 0.75rem;
   align-items: center;
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -222,7 +222,7 @@
 }
 .tagchip {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
@@ -471,7 +471,7 @@
 }
 .plate--empty span {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.625rem;
+  font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -505,7 +505,7 @@
 }
 .meta {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.655rem;
+  font-size: 0.66rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -524,7 +524,7 @@
 .clause {
   font-family: "Spectral", Georgia, serif;
   font-style: italic;
-  font-size: 0.925rem;
+  font-size: 0.92rem;
   line-height: 1.5;
   color: var(--ink);
   margin: 0;
@@ -552,7 +552,7 @@
   display: inline-flex;
   gap: 0.12em;
   color: var(--accent-text);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   line-height: 1;
 }
 
@@ -569,12 +569,12 @@
   width: 1.6rem;
   height: 1.6rem;
   border: 2px solid currentColor;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 .thumb--md {
   padding: 0.3rem 0.6rem;
   border: 2px solid currentColor;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 .thumb--like {
   color: #04231b;
@@ -589,7 +589,7 @@
 }
 .thumb__label {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -695,7 +695,7 @@
 
 .btn {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.6rem 1rem;
@@ -832,7 +832,7 @@
   color: #fff;
 }
 .verdict svg {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .note {
@@ -886,7 +886,7 @@
   color: var(--ink-soft);
   font-family: "Spectral", Georgia, serif;
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.55;
   text-indent: -2.75rem;
 }
@@ -895,7 +895,7 @@
   text-indent: 0;
   font-style: normal;
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent-text);
@@ -962,7 +962,7 @@
 .edit-hint {
   margin-top: 0.75rem;
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--accent-text);
@@ -1019,7 +1019,7 @@ textarea.field {
 }
 .editbar .dirty {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-text);
@@ -1059,7 +1059,7 @@ textarea.field {
   filter: grayscale(0.5) opacity(0.7);
 }
 .removed-row .title {
-  font-size: 1.15rem;
+  font-size: 1.14rem;
 }
 .removed-row .meta {
   margin: 0.2rem 0 0;

@@ -8,79 +8,196 @@
         "role": "surface",
         "displayName": "Wall Ground",
         "canonical": "#e6eaee",
-        "tonalRamp": ["#0f1215", "#1c2128", "#262c34", "#48515a", "#9aa6b2", "#c9d1d8", "#e6eaee", "#ffffff"]
+        "tonalRamp": [
+          "#0f1215",
+          "#1c2128",
+          "#262c34",
+          "#48515a",
+          "#9aa6b2",
+          "#c9d1d8",
+          "#e6eaee",
+          "#ffffff"
+        ]
       },
       "paper-panel": {
         "role": "surface",
         "displayName": "Paper Panel",
         "canonical": "#ffffff",
-        "tonalRamp": ["#12161b", "#1c2128", "#262c34", "#39424c", "#5b6672", "#8f9aa6", "#cdd5dc", "#ffffff"]
+        "tonalRamp": [
+          "#12161b",
+          "#1c2128",
+          "#262c34",
+          "#39424c",
+          "#5b6672",
+          "#8f9aa6",
+          "#cdd5dc",
+          "#ffffff"
+        ]
       },
       "plate-backing": {
         "role": "surface",
         "displayName": "Plate Backing",
         "canonical": "#eef1f4",
-        "tonalRamp": ["#12161b", "#1c2128", "#262c34", "#3c4550", "#5f6a76", "#95a0ac", "#d0d8df", "#eef1f4"]
+        "tonalRamp": [
+          "#12161b",
+          "#1c2128",
+          "#262c34",
+          "#3c4550",
+          "#5f6a76",
+          "#95a0ac",
+          "#d0d8df",
+          "#eef1f4"
+        ]
       },
       "near-black-ink": {
         "role": "ink",
         "displayName": "Near-Black Ink",
         "canonical": "#0f1418",
-        "tonalRamp": ["#0f1418", "#1e262e", "#333f4a", "#48515a", "#6b7681", "#9aa6b2", "#c9d1d8", "#eef1f4"]
+        "tonalRamp": [
+          "#0f1418",
+          "#1e262e",
+          "#333f4a",
+          "#48515a",
+          "#6b7681",
+          "#9aa6b2",
+          "#c9d1d8",
+          "#eef1f4"
+        ]
       },
       "soft-ink": {
         "role": "ink",
         "displayName": "Soft Ink",
         "canonical": "#48515a",
-        "tonalRamp": ["#0f1418", "#1e262e", "#333f4a", "#48515a", "#6b7681", "#9aa6b2", "#c9d1d8", "#eef1f4"]
+        "tonalRamp": [
+          "#0f1418",
+          "#1e262e",
+          "#333f4a",
+          "#48515a",
+          "#6b7681",
+          "#9aa6b2",
+          "#c9d1d8",
+          "#eef1f4"
+        ]
       },
       "plate-keyline": {
         "role": "ink",
         "displayName": "Plate Keyline",
         "canonical": "#0f1418",
-        "tonalRamp": ["#0f1418", "#1a2027", "#2b333c", "#3d4650", "#5c6672", "#8b96a2", "#bcc5cd", "#e4e9ee"]
+        "tonalRamp": [
+          "#0f1418",
+          "#1a2027",
+          "#2b333c",
+          "#3d4650",
+          "#5c6672",
+          "#8b96a2",
+          "#bcc5cd",
+          "#e4e9ee"
+        ]
       },
       "cobalt-accent": {
         "role": "accent",
         "displayName": "Cobalt Accent",
         "canonical": "#1452ff",
-        "tonalRamp": ["#05123f", "#0a1f6e", "#0f34b0", "#1247e0", "#1452ff", "#4a7bff", "#7ea3ff", "#c7d6ff"]
+        "tonalRamp": [
+          "#05123f",
+          "#0a1f6e",
+          "#0f34b0",
+          "#1247e0",
+          "#1452ff",
+          "#4a7bff",
+          "#7ea3ff",
+          "#c7d6ff"
+        ]
       },
       "cobalt-text": {
         "role": "accent",
         "displayName": "Cobalt Text",
         "canonical": "#1247e0",
-        "tonalRamp": ["#05123f", "#0a1f6e", "#0f34b0", "#1247e0", "#1452ff", "#4a7bff", "#7ea3ff", "#c7d6ff"]
+        "tonalRamp": [
+          "#05123f",
+          "#0a1f6e",
+          "#0f34b0",
+          "#1247e0",
+          "#1452ff",
+          "#4a7bff",
+          "#7ea3ff",
+          "#c7d6ff"
+        ]
       },
       "cyan-highlight": {
         "role": "highlight",
         "displayName": "Cyan Highlight",
         "canonical": "#0bb6c9",
-        "tonalRamp": ["#032f34", "#064d56", "#08909f", "#0bb6c9", "#22e6c8", "#5ceede", "#a0f4ea", "#d7faf5"]
+        "tonalRamp": [
+          "#032f34",
+          "#064d56",
+          "#08909f",
+          "#0bb6c9",
+          "#22e6c8",
+          "#5ceede",
+          "#a0f4ea",
+          "#d7faf5"
+        ]
       },
       "liked-green": {
         "role": "sentiment-positive",
         "displayName": "Liked Green",
         "canonical": "#0aa259",
-        "tonalRamp": ["#04231b", "#063f2c", "#077a45", "#0aa259", "#26d47e", "#5ae3a2", "#9fefc6", "#dcf4e8"]
+        "tonalRamp": [
+          "#04231b",
+          "#063f2c",
+          "#077a45",
+          "#0aa259",
+          "#26d47e",
+          "#5ae3a2",
+          "#9fefc6",
+          "#dcf4e8"
+        ]
       },
       "liked-tint": {
         "role": "sentiment-positive",
         "displayName": "Liked Tint",
         "canonical": "#dcf4e8",
-        "tonalRamp": ["#04231b", "#063f2c", "#077a45", "#0aa259", "#26d47e", "#5ae3a2", "#9fefc6", "#dcf4e8"]
+        "tonalRamp": [
+          "#04231b",
+          "#063f2c",
+          "#077a45",
+          "#0aa259",
+          "#26d47e",
+          "#5ae3a2",
+          "#9fefc6",
+          "#dcf4e8"
+        ]
       },
       "disliked-red": {
         "role": "sentiment-negative",
         "displayName": "Disliked Red",
         "canonical": "#e11d34",
-        "tonalRamp": ["#331a1e", "#5c1420", "#a3162a", "#e11d34", "#ff4b60", "#ff8593", "#ffb3bd", "#ffe1e3"]
+        "tonalRamp": [
+          "#331a1e",
+          "#5c1420",
+          "#a3162a",
+          "#e11d34",
+          "#ff4b60",
+          "#ff8593",
+          "#ffb3bd",
+          "#ffe1e3"
+        ]
       },
       "disliked-tint": {
         "role": "sentiment-negative",
         "displayName": "Disliked Tint",
         "canonical": "#ffe1e3",
-        "tonalRamp": ["#331a1e", "#5c1420", "#a3162a", "#e11d34", "#ff4b60", "#ff8593", "#ffb3bd", "#ffe1e3"]
+        "tonalRamp": [
+          "#331a1e",
+          "#5c1420",
+          "#a3162a",
+          "#e11d34",
+          "#ff4b60",
+          "#ff8593",
+          "#ffb3bd",
+          "#ffe1e3"
+        ]
       }
     },
     "typographyMeta": {
@@ -103,6 +220,34 @@
       "label": {
         "displayName": "Label — Spline Sans Mono",
         "purpose": "Every control, meta line, badge, caption, and definition list. Uppercase, letter-spaced 0.09em-0.18em, tabular-nums where figures align."
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "Young Serif section and empty-state headings."
+      },
+      "note-lead": {
+        "displayName": "Note Lead",
+        "purpose": "The User Note opening clause, Spectral italic 600 in cobalt at poster scale — the one place colour goes bold in prose."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Empty-state and secondary prose."
+      },
+      "control": {
+        "displayName": "Control Text",
+        "purpose": "The search input, Spectral italic."
+      },
+      "clause": {
+        "displayName": "Clause",
+        "purpose": "The card clause and the AI-interpretation marginalia, Spectral italic."
+      },
+      "label-lg": {
+        "displayName": "Label Large",
+        "purpose": "Standfirst and headblock definition lists."
+      },
+      "label-xs": {
+        "displayName": "Label XS",
+        "purpose": "Segmented controls, tag chips, sort/view toggles, page footers."
       }
     },
     "shadows": [
@@ -160,10 +305,22 @@
       }
     ],
     "breakpoints": [
-      { "name": "wall-4-to-2", "value": "1000px" },
-      { "name": "detail-stack", "value": "940px" },
-      { "name": "band-stack", "value": "720px" },
-      { "name": "wall-2-to-1", "value": "560px" }
+      {
+        "name": "wall-4-to-2",
+        "value": "1000px"
+      },
+      {
+        "name": "detail-stack",
+        "value": "940px"
+      },
+      {
+        "name": "band-stack",
+        "value": "720px"
+      },
+      {
+        "name": "wall-2-to-1",
+        "value": "560px"
+      }
     ]
   },
   "components": [
@@ -279,18 +436,66 @@
       "SLATE (light, default use scene) / NOIR (dark, answers the OS). Theme follows prefers-color-scheme; [data-theme] and ?theme= override."
     ],
     "rules": [
-      { "name": "The Named-Role Rule", "body": "Every colour is one of seven print roles — ground, panel, ink, accent, highlight, like, dislike — doing real work. No candy accents, no fourth hue, no colour without a job.", "section": "Colors" },
-      { "name": "The Sentiment-Is-Semantic Rule", "body": "Green is Liked and red is Disliked, in both themes, always. Sentiment colour never shifts with the palette, and it is the only saturated colour allowed to touch a plate.", "section": "Colors" },
-      { "name": "The Ink-Not-Box Rule", "body": "Selection and active states flood an element with --ink (or its sentiment colour) and reverse the text to --ground. They never draw a new border and never raise a shadow.", "section": "Colors" },
-      { "name": "The Three-Faces Rule", "body": "Young Serif sets identity, Spectral speaks, Spline Sans Mono labels. A face never crosses into another face's job.", "section": "Typography" },
-      { "name": "The Monumental-Note Rule", "body": "The User Note's opening clause is set at poster scale in Spectral italic 600, --accent-text — the single place colour goes bold in running prose. No other text ever gets this treatment.", "section": "Typography" },
-      { "name": "The Mono-Caps Rule", "body": "Every control, meta line, badge, and caption is Spline Sans Mono, uppercase, letter-spaced at least 0.09em. Numbers in aligned contexts use tabular-nums; body prose uses oldstyle-nums.", "section": "Typography" },
-      { "name": "The Reading-Order Rule", "body": "The wall is a left-to-right, row-by-row grid (4 → 2 → 1). The scattered-hang feel is per-column margin-top offset plus per-plate tilt only. DOM order always equals reading order.", "section": "Layout" },
-      { "name": "The Rating-Stratifies Rule", "body": "Plate proportion is driven by rating alone (triple-diamond 4:3, double 16:11, single / none 16:9). Neither sentiment nor recency ever changes a plate's size.", "section": "Layout" },
-      { "name": "The Only-Plates-Lift Rule", "body": "Cast shadows belong to pinned plates (and the one modal dialog) only. Labels, headblocks, bands, buttons, and fields are flat — separated by 2px rules and colour, never by shadow.", "section": "Elevation & Depth" },
-      { "name": "The Ignite-Don't-Float Rule", "body": "On hover/focus a plate moves from --shadow-plate to --shadow-plate-lift and translateY(-5px) while straightening to rotate(0). That is the entire elevation change in the product; there is no resting hover-float and no parallax.", "section": "Elevation & Depth" },
-      { "name": "The Zero-Radius Rule", "body": "Every corner is square. The pushpin disc and the kind dot are the only permitted curves — introducing border-radius anywhere else breaks the print world.", "section": "Shapes" },
-      { "name": "The Rule-Weight Rule", "body": "Structural divisions are 2px solid --ink; plate edges are 1.5px --keyline; sentiment bars are 3–4px; anything derived or secondary is 1px dashed --ink-soft. Weights are not mixed arbitrarily.", "section": "Shapes" }
+      {
+        "name": "The Named-Role Rule",
+        "body": "Every colour is one of seven print roles — ground, panel, ink, accent, highlight, like, dislike — doing real work. No candy accents, no fourth hue, no colour without a job.",
+        "section": "Colors"
+      },
+      {
+        "name": "The Sentiment-Is-Semantic Rule",
+        "body": "Green is Liked and red is Disliked, in both themes, always. Sentiment colour never shifts with the palette, and it is the only saturated colour allowed to touch a plate.",
+        "section": "Colors"
+      },
+      {
+        "name": "The Ink-Not-Box Rule",
+        "body": "Selection and active states flood an element with --ink (or its sentiment colour) and reverse the text to --ground. They never draw a new border and never raise a shadow.",
+        "section": "Colors"
+      },
+      {
+        "name": "The Three-Faces Rule",
+        "body": "Young Serif sets identity, Spectral speaks, Spline Sans Mono labels. A face never crosses into another face's job.",
+        "section": "Typography"
+      },
+      {
+        "name": "The Monumental-Note Rule",
+        "body": "The User Note's opening clause is set at poster scale in Spectral italic 600, --accent-text — the single place colour goes bold in running prose. No other text ever gets this treatment.",
+        "section": "Typography"
+      },
+      {
+        "name": "The Mono-Caps Rule",
+        "body": "Every control, meta line, badge, and caption is Spline Sans Mono, uppercase, letter-spaced at least 0.09em. Numbers in aligned contexts use tabular-nums; body prose uses oldstyle-nums.",
+        "section": "Typography"
+      },
+      {
+        "name": "The Reading-Order Rule",
+        "body": "The wall is a left-to-right, row-by-row grid (4 → 2 → 1). The scattered-hang feel is per-column margin-top offset plus per-plate tilt only. DOM order always equals reading order.",
+        "section": "Layout"
+      },
+      {
+        "name": "The Rating-Stratifies Rule",
+        "body": "Plate proportion is driven by rating alone (triple-diamond 4:3, double 16:11, single / none 16:9). Neither sentiment nor recency ever changes a plate's size.",
+        "section": "Layout"
+      },
+      {
+        "name": "The Only-Plates-Lift Rule",
+        "body": "Cast shadows belong to pinned plates (and the one modal dialog) only. Labels, headblocks, bands, buttons, and fields are flat — separated by 2px rules and colour, never by shadow.",
+        "section": "Elevation & Depth"
+      },
+      {
+        "name": "The Ignite-Don't-Float Rule",
+        "body": "On hover/focus a plate moves from --shadow-plate to --shadow-plate-lift and translateY(-5px) while straightening to rotate(0). That is the entire elevation change in the product; there is no resting hover-float and no parallax.",
+        "section": "Elevation & Depth"
+      },
+      {
+        "name": "The Zero-Radius Rule",
+        "body": "Every corner is square. The pushpin disc and the kind dot are the only permitted curves — introducing border-radius anywhere else breaks the print world.",
+        "section": "Shapes"
+      },
+      {
+        "name": "The Rule-Weight Rule",
+        "body": "Structural divisions are 2px solid --ink; plate edges are 1.5px --keyline; sentiment bars are 3–4px; anything derived or secondary is 1px dashed --ink-soft. Weights are not mixed arbitrarily.",
+        "section": "Shapes"
+      }
     ],
     "dos": [
       "Do keep the wall ground calm (--ground) so screenshots and prose carry the contrast — spend saturation only on ink, labels, sentiment, and the cobalt accent.",

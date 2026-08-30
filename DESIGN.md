@@ -31,6 +31,18 @@ typography:
     fontWeight: 400
     lineHeight: 1.01
     letterSpacing: "0"
+  subhead:
+    fontFamily: '"Young Serif", Georgia, serif'
+    fontSize: "clamp(1.6rem, 3.4vw, 2.3rem)"
+    fontWeight: 400
+    lineHeight: 1.1
+    letterSpacing: "0"
+  note-lead:
+    fontFamily: '"Spectral", Georgia, "Times New Roman", serif'
+    fontSize: "clamp(1.5rem, 3.4vw, 2.3rem)"
+    fontWeight: 600
+    lineHeight: 1.16
+    letterSpacing: "0"
   title:
     fontFamily: '"Young Serif", Georgia, serif'
     fontSize: "1.5rem"
@@ -43,12 +55,42 @@ typography:
     fontWeight: 400
     lineHeight: 1.62
     letterSpacing: "0"
+  body-sm:
+    fontFamily: '"Spectral", Georgia, "Times New Roman", serif'
+    fontSize: "1.05rem"
+    fontWeight: 400
+    lineHeight: 1.6
+    letterSpacing: "0"
+  control:
+    fontFamily: '"Spectral", Georgia, "Times New Roman", serif'
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: "0"
+  clause:
+    fontFamily: '"Spectral", Georgia, "Times New Roman", serif'
+    fontSize: "0.92rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0"
+  label-lg:
+    fontFamily: '"Spline Sans Mono", ui-monospace, monospace'
+    fontSize: "0.72rem"
+    fontWeight: 400
+    lineHeight: 1.3
+    letterSpacing: "0.13em"
   label:
     fontFamily: '"Spline Sans Mono", ui-monospace, monospace'
     fontSize: "0.66rem"
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "0.13em"
+  label-xs:
+    fontFamily: '"Spline Sans Mono", ui-monospace, monospace'
+    fontSize: "0.62rem"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.18em"
 rounded:
   none: "0"
   full: "9999px"
@@ -260,21 +302,24 @@ draw a new border and never raise a shadow.
 Three self-hosted faces (via `@fontsource`), each locked to one job.
 
 - **Display — Young Serif (400).** Warm, chunky old-style serif. The `TasteVault`
-  wordmark at `clamp(2.6rem, 7vw, 6rem)` / line-height 0.9 / `-0.01em` (the
-  `Vault` half set in `--accent`); Reference card titles at 1.5rem / 1.06; the
-  detail entry title at `clamp(2rem, 4.5vw, 3.1rem)` / 1.01; empty-state
-  headings; dialog titles. Capped at 6rem.
+  wordmark (`display`, `clamp(2.6rem, 7vw, 6rem)` / 0.9 / `-0.01em`, the `Vault`
+  half in `--accent`); the detail entry title (`headline`,
+  `clamp(2rem, 4.5vw, 3.1rem)` / 1.01); empty-state and section headings
+  (`subhead`, `clamp(1.6rem, 3.4vw, 2.3rem)`); Reference card titles and dialog
+  titles (`title`, 1.5rem / 1.06). Capped at 6rem.
 - **Body — Spectral (400, plus 400 italic, 600, 600 italic).** The reading face.
-  Base body 17px / 1.55 with old-style numerals; the User Note at 1.14rem / 1.62;
-  the card clause in Spectral *italic* 0.925rem; the search input in Spectral
-  *italic* 1rem; the "later hand" AI marginalia in Spectral italic 0.95rem. The
-  **User Note lead** is Spectral italic **600** at
-  `clamp(1.5rem, 3.4vw, 2.3rem)` / 1.16 in `--accent-text`.
-- **Label — Spline Sans Mono (400, 500, 600).** Every control, meta line, label,
-  and caption. Uppercase, letter-spaced 0.09em–0.18em, `tabular-nums` where
-  numbers align. Segmented controls at 0.625rem / 0.18em; the standfirst at
-  0.75rem / 0.13em; meta lines at 0.655rem / 0.03em; buttons at 0.68rem / 0.14em;
-  headblock definition lists at 0.72rem.
+  Base body 17px / 1.55 with old-style numerals; the User Note (`body`, 1.14rem /
+  1.62); empty-state prose (`body-sm`, 1.05rem); the search input, Spectral
+  *italic* (`control`, 1rem); the card clause and the "later hand" AI marginalia,
+  Spectral *italic* (`clause`, 0.92rem). The **User Note lead** is `note-lead` —
+  Spectral italic **600** at `clamp(1.5rem, 3.4vw, 2.3rem)` / 1.16 in
+  `--accent-text`.
+- **Label — Spline Sans Mono (400, 500).** Every control, meta line, label, and
+  caption. Uppercase, letter-spaced 0.13em–0.18em, `tabular-nums` where numbers
+  align. Three steps only: `label-lg` 0.72rem (standfirst, headblock definition
+  lists), `label` 0.66rem (meta lines, legend, section captions), `label-xs`
+  0.62rem / 0.18em (segmented controls, tag chips, sort/view toggles, page
+  footers).
 
 **Character.** Two serifs and a mono, no sans anywhere. Young Serif gives the
 product a hand and a weight; Spectral is a quiet editorial voice for the one
@@ -283,15 +328,19 @@ typeset caption on a gallery label, not UI chrome.
 
 **Hierarchy (largest to smallest):**
 
-1. `TasteVault` wordmark — Young Serif `clamp(2.6rem, 7vw, 6rem)`
-2. Detail entry title — Young Serif `clamp(2rem, 4.5vw, 3.1rem)`
-3. User Note lead — Spectral italic 600 `clamp(1.5rem, 3.4vw, 2.3rem)`, cobalt
-4. Card title / dialog title — Young Serif 1.5rem
-5. User Note body — Spectral 1.14rem
-6. Base body — Spectral 17px
-7. Card clause — Spectral italic 0.925rem
-8. Standfirst — Spline Sans Mono 0.75rem / 0.13em, uppercase
-9. Meta, controls, labels — Spline Sans Mono 0.6–0.68rem, uppercase, tracked
+1. `display` — `TasteVault` wordmark — Young Serif `clamp(2.6rem, 7vw, 6rem)`
+2. `headline` — detail entry title — Young Serif `clamp(2rem, 4.5vw, 3.1rem)`
+3. `subhead` — empty-state / section headings — Young Serif `clamp(1.6rem, 3.4vw, 2.3rem)`
+4. `note-lead` — User Note opening clause — Spectral italic 600 `clamp(1.5rem, 3.4vw, 2.3rem)`, cobalt
+5. `title` — card title / dialog title — Young Serif 1.5rem
+6. `body` — User Note body — Spectral 1.14rem
+7. `body-sm` — empty-state prose — Spectral 1.05rem
+8. base body — Spectral 17px (root anchor; the rem scale is relative to it)
+9. `control` — search input — Spectral italic 1rem
+10. `clause` — card clause / AI marginalia — Spectral italic 0.92rem
+11. `label-lg` — standfirst / headblock lists — Spline Sans Mono 0.72rem / 0.13em
+12. `label` — meta lines / legend — Spline Sans Mono 0.66rem / 0.13em
+13. `label-xs` — controls / chips / footers — Spline Sans Mono 0.62rem / 0.18em
 
 **The Three-Faces Rule.** Young Serif sets identity, Spectral speaks, Spline Sans
 Mono labels. A face never crosses into another face's job.
