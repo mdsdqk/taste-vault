@@ -1,8 +1,22 @@
 <div align="center">
 
-# TasteVault
+<h1>TasteVault</h1>
 
-**A local-first memory of the web experiences you've judged good and bad —<br>yours to browse, and, as it grows, your coding agent's to consult.**
+<p><b>A local-first vault for the web design you've judged — the good and the bad,<br>with your reasons kept intact, on a wall you can browse.</b></p>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/portal-wall-dark.png">
+  <img alt="The TasteVault Portal — a gallery wall of pinned screenshot plates, each with a hand-written note and a like or dislike mark. The contents shown are an illustrative mockup." src="docs/media/portal-wall.png" width="860">
+</picture>
+
+<p><sub><i>The Portal, populated. Everything above is an illustrative mockup — your Vault starts empty and fills as you save.</i></sub></p>
+
+<p>
+  <a href="#getting-started">Getting started</a> &nbsp;·&nbsp;
+  <a href="#how-it-works">How it works</a> &nbsp;·&nbsp;
+  <a href="#architecture">Architecture</a> &nbsp;·&nbsp;
+  <a href="#where-this-is-going">Roadmap</a>
+</p>
 
 </div>
 
@@ -33,6 +47,14 @@ Four commitments set the shape of the project:
 - **More than a screenshot.** A still image is one kind of evidence; the roadmap
   adds interactions, transitions, motion, and responsive behaviour as
   first-class captures.
+
+<div align="center">
+<br>
+<picture>
+  <img alt="A single Reference open in the Portal — the screenshot plates on the left, a typeset identity block, and the User Note set large in the reader's own words, with an AI interpretation kept visually subordinate below it. Illustrative mockup." src="docs/media/portal-detail.png" width="820">
+</picture>
+<p><sub><i>One Reference open — the note you wrote is the centrepiece; the AI's later reading sits under it, dated and dimmed.</i></sub></p>
+</div>
 
 ---
 
