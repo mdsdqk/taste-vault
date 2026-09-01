@@ -1,0 +1,37 @@
+{
+  "name": "create-taste-vault",
+  "version": "0.1.0",
+  "description": "One-command installer for TasteVault — a local-first vault for the interface design you've judged.",
+  "bin": {
+    "create-taste-vault": "bin/cli.mjs"
+  },
+  "type": "module",
+  "files": [
+    "bin/cli.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "taste-vault",
+    "tastevault",
+    "create",
+    "scaffold",
+    "design",
+    "ux",
+    "references"
+  ],
+  "author": "Mohammed Sadiq K",
+  "homepage": "https://github.com/mdsdqk/taste-vault#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdsdqk/taste-vault.git",
+    "directory": "scaffolder"
+  },
+  "bugs": {
+    "url": "https://github.com/mdsdqk/taste-vault/issues"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

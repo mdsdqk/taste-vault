@@ -34,8 +34,7 @@ With no server (or an empty Vault) the Portal shows its first-run empty state
 rather than erroring. Add References with `pnpm new-ref` or in place via the
 detail view.
 
-Screenshots for design review: `node scripts/shoot.mjs [baseUrl]` (needs Chrome;
-set `CHROME_PATH` if it's not at the default Windows location).
+Screenshots for design review: `node scripts/shoot.mjs [baseUrl]` (needs Chrome or Chromium; set `CHROME_PATH` if it isn't in a default location).
 
 ## Not yet built (follow-ups)
 
