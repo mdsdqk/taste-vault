@@ -14,21 +14,23 @@ This document supersedes the two drafts previously in `.scratch/`
 ## 1. Summary
 
 TasteVault is an open-source, local-first personal UX/design memory system. It
-sits between the web and an AI coding agent as a persistent record of what a
-specific human considers good user experience.
+sits between the interfaces a person encounters and an AI coding agent as a
+persistent record of what a specific human considers good interface design. The
+interfaces can be web, mobile, desktop, wearable, or embedded — any surface with
+a UI.
 
-The user captures web experiences they like — and, marked as such, ones they
+The user captures interface designs they like — and, marked as such, ones they
 want to **avoid** — preserves the visual, structural, and behavioural
 **Evidence** behind them, writes a **User Note** explaining *why*, browses the
-accumulated collection through a **Portal** ("a personal Mobbin"), and — in later
-phases — exposes the collection to a coding agent through a retrieval interface
-(MCP) so the agent can pull the few relevant examples, and the relevant guard
-rails, before it designs anything.
+accumulated collection through a **Portal**, and — in later phases — exposes the
+collection to a coding agent through a retrieval interface (MCP) so the agent can
+pull the few relevant examples, and the relevant guard rails, before it designs
+anything.
 
 The transformation model:
 
 ```
-Web experience
+Interface design (any surface)
   → Human selection + explanation
   → Visual + structural + behavioural evidence
   → AI interpretation (derived)
@@ -48,9 +50,9 @@ the human directing it.
 The user considers UX and product thinking a personal strength, and visual/UI
 execution a weaker one. AI can close that gap, but generic AI interfaces drift
 toward average patterns. Existing reference tools (Mobbin and similar) help, but
-screenshots alone lose the dimensions that make an experience good: interactions,
-transitions, animation, state changes, navigation behaviour, responsive
-behaviour, contextual relationships, perceived flow.
+screenshots alone lose the dimensions that make an interface good: interactions,
+transitions, animation, state changes, navigation behaviour, responsive and
+adaptive behaviour, contextual relationships, perceived flow.
 
 Core hypothesis:
 
@@ -93,8 +95,9 @@ patterns instead of rediscovering them.
 A **Reference** is the unit of knowledge: one thing the user saved as a signal
 about their taste — by default something they liked, or something they want to
 avoid when its `sentiment` is `negative` ([ADR 0002](./adr/0002-negative-signal.md)).
-It may represent a whole site, a page, a component, an interaction, a transition,
-an animation, a responsive behaviour, or a UX pattern.
+It may represent a whole product, a screen or page, a component, an interaction,
+a transition, an animation, a responsive or adaptive behaviour, or a UX pattern —
+captured from any surface (web, mobile, desktop, wearable, embedded, device UI).
 
 Conceptual layers (not every Reference has every layer; capture degrades
 gracefully):
@@ -336,8 +339,8 @@ drift: newer References may warrant more weight than older ones.
 - **Canvas / WebGL** — experiences not meaningfully represented via DOM.
 - **Dynamic applications** — capturing stateful apps without reproducing a
   backend.
-- **Legal / licensing** — how much third-party page content to persist locally
-  vs. represent through screenshots, metadata, and derived observations.
+- **Legal / licensing** — how much third-party interface content to persist
+  locally vs. represent through screenshots, metadata, and derived observations.
 - **Retrieval quality** — preventing a large corpus from surfacing superficially
   relevant but aesthetically wrong results.
 - **Taste drift** — weighting References by recency as taste evolves.
@@ -349,8 +352,8 @@ drift: newer References may warrant more weight than older ones.
 
 ## 9. One-line definition
 
-> A personal, local-first UX/design memory that lets me save things I love on the
-> web — and the ones I want to avoid — preserve the visual and behavioural
-> evidence behind them, explain why, browse my accumulated taste like a personal
-> Mobbin, and give an AI agent a powerful retrieval interface for finding the
-> right examples, and the right guard rails, when I'm designing something new.
+> A personal, local-first UX/design memory that lets me save interface designs I
+> love — from any surface — and the ones I want to avoid, preserve the visual and
+> behavioural evidence behind them, explain why, browse my accumulated taste, and
+> give an AI agent a powerful retrieval interface for finding the right examples,
+> and the right guard rails, when I'm designing something new.

@@ -58,6 +58,9 @@ adding to.
   metadata, relevant assets.
 - The extension writes into the same `references/` store Phase 1 reads; the
   Portal shows captured and hand-authored References together with no changes.
+- This phase automates **web** capture only. References from mobile apps,
+  desktop tools, wearables, and device UIs stay hand-authored (screenshots +
+  `reference.md`) until a later phase adds a capture path for them.
 
 **Success criterion:** saving a reference takes seconds.
 

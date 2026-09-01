@@ -21,7 +21,7 @@ The primary user is a developer running their own local TasteVault: someone who
 considers UX and product thinking a personal strength and visual/UI execution a
 weaker one, who wants an AI coding agent to close that gap without drifting toward
 average patterns. They use it in two situations — (1) browsing and curating their
-accumulated collection of saved web experiences, and (2) directing an AI coding
+accumulated collection of saved interface designs, and (2) directing an AI coding
 agent that retrieves from that collection while designing something new.
 
 The application code is open-source and the design should treat any developer as
@@ -33,11 +33,13 @@ machine. There is no multi-user, multi-tenant, or shared-Vault dimension.
 ## Product Purpose
 
 TasteVault is an open-source, local-first personal UX/design memory system. It
-sits between the web and an AI coding agent as a persistent record of what a
-specific human considers good — and bad — user experience.
+sits between the interfaces a person encounters and an AI coding agent as a
+persistent record of what a specific human considers good — and bad — interface
+design. The interfaces can be web, mobile, desktop, wearable, or embedded — any
+surface with a UI.
 
-The user captures web experiences they have explicitly judged (things to emulate,
-and things to avoid), preserves the visual, structural, and behavioural
+The user captures interface designs they have explicitly judged (things to
+emulate, and things to avoid), preserves the visual, structural, and behavioural
 **Evidence** behind them, writes a **User Note** explaining *why*, browses the
 accumulated collection through the **Portal**, and — in later phases — exposes the
 collection to a coding agent through a retrieval interface (MCP) so the agent can
@@ -55,8 +57,8 @@ never as "the X of Y". Its distinguishing mechanism, which a neighbouring tool
 could not truthfully claim:
 
 - It preserves the dimensions a screenshot loses — interactions, transitions,
-  animation, state changes, navigation and responsive behaviour, perceived flow —
-  as first-class Evidence, not just static images.
+  animation, state changes, navigation, responsive and adaptive behaviour,
+  perceived flow — as first-class Evidence, not just static images.
 - The human's own reasoning (the User Note) is ground truth and stays
   independently searchable; AI-derived vocabulary, patterns, and principles are
   kept separate and always marked as derived, so an early AI mistake can never
@@ -75,12 +77,14 @@ could not truthfully claim:
 - **A Reference** is any directory under `references/`, named
   `<slug>-<YYYY-MM-DD>`. It contains image files and an optional `reference.md`
   (YAML frontmatter + a Markdown body that is the User Note). It may represent a
-  whole site, a page, a component, an interaction, a transition, an animation, a
-  responsive behaviour, or a UX pattern.
+  whole product, a screen or page, a component, an interaction, a transition, an
+  animation, a responsive or adaptive behaviour, or a UX pattern — from any
+  surface (web, mobile, desktop, wearable, embedded, device UI).
 - **Phase 1 capture is manual** — the user places files by hand or runs
   `pnpm new-ref` (`scripts/new-ref.ts`), a scaffold that produces a well-formed
   folder. The scaffold is a convenience, never a gate. Later phases automate
-  capture via a browser extension.
+  web capture via a browser extension; other surfaces stay manual or gain
+  dedicated tooling.
 - **The Portal** has two views: **Library** (grid of covers; filter bar =
   `kind` toggle + `sentiment` toggle + tag chips + text search; default sort
   `saved` descending; negative References shown inline with a badge) and
@@ -116,8 +120,8 @@ could not truthfully claim:
   tags exist. `tags` share one facet across both sentiment poles; the card badge
   disambiguates. `docs/` may carry a *suggested* tag list; nothing is enforced.
 - **Local-first, no external-service dependency.** Personal taste data, possibly
-  from authenticated sites, potentially a large asset corpus. A hosted version
-  may come later but is not a Phase 1 concern.
+  from authenticated apps or sites, potentially a large asset corpus. A hosted
+  version may come later but is not a Phase 1 concern.
 - **Raw Evidence and AI Interpretation are separate stores.** An incorrect AI
   summary must never overwrite captured Evidence.
 - **Retrieval, not generation.** TasteVault never produces the final interface;
@@ -127,9 +131,10 @@ could not truthfully claim:
   those words; honour their listed *Avoid* lists.
 - **Open decisions (not blocking):** browser capture fidelity; storing References
   from authenticated apps; cross-origin / canvas / WebGL content; capturing
-  stateful apps; third-party content licensing; retrieval quality at scale; taste
-  drift (weighting by recency); how `sentiment` weights retrieval ranking and the
-  shape of a negative-aware MCP tool (deferred to Phase 5).
+  stateful apps; the capture path for non-web surfaces (mobile, desktop,
+  wearable, device UI); third-party content licensing; retrieval quality at
+  scale; taste drift (weighting by recency); how `sentiment` weights retrieval
+  ranking and the shape of a negative-aware MCP tool (deferred to Phase 5).
 
 ## Brand Commitments
 
@@ -138,10 +143,9 @@ could not truthfully claim:
 - **No comparison positioning.** Do not describe the product as "a personal
   Mobbin" or with any "the X of Y" / "like X for Y" construction — the user has
   asked for this explicitly, on the grounds that the purpose is genuinely
-  different from reference-screenshot tools. The phrase "a personal Mobbin"
-  appears in `docs/PRD.md`, `CONTEXT.md`, and `references/readme.md` as legacy
-  wording that predates this preference; treat it as something to drop, not to
-  carry forward.
+  different from reference-screenshot tools. The legacy "a personal Mobbin"
+  wording has been removed from `docs/PRD.md`, `CONTEXT.md`, and
+  `references/readme.md`; do not reintroduce it.
 - Voice and personality for the Portal are otherwise open — to be set in the
   later visual pass, not here.
 

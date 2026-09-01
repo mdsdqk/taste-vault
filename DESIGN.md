@@ -1,9 +1,9 @@
 ---
 name: TasteVault Portal
 description: >-
-  The Connoisseur's Gallery — a personal wall of judged web experiences, hung as
-  silkscreen-printed plates pinned to a calm gallery wall. Rules and ink, never
-  boxes. SLATE (light) / NOIR (dark).
+  The Connoisseur's Gallery — a personal wall of judged interface designs, hung
+  as silkscreen-printed plates pinned to a calm gallery wall. Rules and ink,
+  never boxes. SLATE (light) / NOIR (dark).
 colors:
   wall-ground: "#e6eaee"
   paper-panel: "#ffffff"
@@ -179,7 +179,7 @@ components:
 ## Overview
 
 **Creative North Star: "The Connoisseur's Gallery."** Browsing your own taste is
-wandering a gallery you hung, not scanning a feed. Every judged web experience is
+wandering a gallery you hung, not scanning a feed. Every judged interface is
 a **pinned plate** — a screenshot with a thin ink keyline, a 6px paper mat, a
 soft blurred cast shadow, a real radial-gradient pushpin, and a 1–2° tilt —
 tacked to a calm, bright wall and arranged left-to-right by how much you mean it.

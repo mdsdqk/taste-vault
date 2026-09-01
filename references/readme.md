@@ -6,9 +6,11 @@ Nothing here is uploaded anywhere.
 
 ## What a Reference is
 
-One thing you saved as a signal about your taste — a whole page or site, a
-component, or (in later phases) an interaction or flow. By default it is
-something you **liked**. It can also be something you want to **avoid**: add
+One thing you saved as a signal about your taste — a whole product, a screen or
+page, a component, or (in later phases) an interaction or flow. It can come from
+any surface: a website, a mobile app, a desktop tool, a wearable, a device
+screen. By default it is something you **liked**. It can also be something you
+want to **avoid**: add
 `sentiment: negative` (see [Negative References](#negative-references)). Each
 Reference is one directory inside `references/`.
 
@@ -67,12 +69,12 @@ always there.
 | `title` | Display name | de-kebabed from the folder slug |
 | `url` | Where it's from | hidden in the view |
 | `source` | Site/product name | the URL's hostname |
-| `kind` | `page` (whole page/site) or `element` (isolated component/region) | hidden |
+| `kind` | `page` (whole screen/page/product) or `element` (isolated component/region) | hidden |
 | `saved` | Date you saved it | folder date suffix, else folder modified time |
 | `sentiment` | `negative` if this is something to avoid; omit if you liked it | `positive` |
 | `rating` | Strength of feeling, `1`–`3` (applies to either pole) | hidden |
 | `tags` | Freeform list; the Portal builds its filters from these | `[]` |
-| `surface` | Freeform hint like `dashboard`, `marketing site`, `editor` | hidden |
+| `surface` | Freeform hint like `dashboard`, `mobile app`, `watch face`, `kiosk`, `editor` | hidden |
 
 There is no fixed tag list and nothing is validated — a typo in this file will
 never hide your Reference. See `docs/` for *suggested* tags if you want
@@ -80,8 +82,8 @@ consistency.
 
 ## Negative References
 
-Sometimes the useful signal is a bad one: you land on a site, it's horrible, and
-you want your AI agent to *avoid* whatever it did. Save it the same way you'd
+Sometimes the useful signal is a bad one: you hit an interface, it's horrible,
+and you want your AI agent to *avoid* whatever it did. Save it the same way you'd
 save something you like — folder, screenshots, a `reference.md` — and add one
 field:
 
@@ -91,7 +93,7 @@ sentiment: negative
 
 In the User Note, say **what to avoid and why** rather than what you liked. Use
 `rating` for how strongly you feel (a `3` negative is "never do this"). It can be
-a whole page (`kind: page`) or one bad pattern in isolation (`kind: element`).
+a whole screen (`kind: page`) or one bad pattern in isolation (`kind: element`).
 
 Everything under `references/` counts as something you *like* unless it carries
 `sentiment: negative`. The Portal shows negative References in the grid with a

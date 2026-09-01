@@ -3,6 +3,7 @@
 # guide is tracked. See docs/adr/0001-references-degrade-gracefully.md.
 references/*
 !references/readme.md
+!references/AGENTS.md
 
 # --- Dependencies ----------------------------------------------------------------
 node_modules/
