@@ -2,7 +2,7 @@
 
 <h1>TasteVault</h1>
 
-<p><b>A local-first vault for the web design you've judged — the good and the bad,<br>with your reasons kept intact, on a wall you can browse.</b></p>
+<p><b>A local-first vault for the interface design you've judged — the good and the bad,<br>from any surface, with your reasons kept intact, on a wall you can browse.</b></p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/media/portal-wall-dark.png">
@@ -22,12 +22,13 @@
 
 ---
 
-TasteVault sits between the web and an AI coding agent. You save the pages,
-components, and interactions you've decided are good — and the ones you've
-decided are bad — with the evidence intact and a note in your own words on why.
-You browse that collection through the **Portal**. Later, a retrieval layer feeds
-your agent the few relevant examples, and the relevant guard rails, before it
-designs anything.
+TasteVault sits between the interfaces you notice and an AI coding agent. You
+save the screens, components, and interactions you've decided are good — and the
+ones you've decided are bad — from anywhere a design lives: a website, a mobile
+app, a smartwatch face, a device's on-screen menu. Each one keeps its evidence
+and a note in your own words on why. You browse the collection through the
+**Portal**. Later, a retrieval layer feeds your agent the few relevant examples,
+and the relevant guard rails, before it designs anything.
 
 > It preserves the dimensions a screenshot loses, keeps your reasoning as ground
 > truth, and hands your agent a small high-signal set — never the whole library.
