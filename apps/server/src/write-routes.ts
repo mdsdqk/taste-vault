@@ -13,7 +13,7 @@ import {
   slugify,
   type ReferenceEdits,
 } from "./reference-md.js";
-import { isSafeSegment } from "./util.js";
+import { isInsideDir, isSafeSegment } from "./util.js";
 
 /**
  * The disk-write half of the API: create, amend, remove (→ `.trash/`), list
@@ -176,7 +176,7 @@ export async function registerWriteRoutes(
         return reply.code(400).send({ error: "bad path" });
       }
       const abs = path.join(trashDir, slug, file);
-      if (!abs.startsWith(trashDir + path.sep)) {
+      if (!isInsideDir(trashDir, abs)) {
         return reply.code(400).send({ error: "bad path" });
       }
       try {

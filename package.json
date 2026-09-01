@@ -1,8 +1,12 @@
 {
   "name": "taste-vault",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "A local-first vault for the interface design you've judged.",
+  "packageManager": "pnpm@11.13.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "concurrently -k -n server,web -c cyan,magenta \"pnpm --filter @taste-vault/server dev\" \"pnpm --filter @taste-vault/web dev\"",
     "start": "pnpm --filter @taste-vault/web build && pnpm --filter @taste-vault/server start",
@@ -14,8 +18,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Mohammed Sadiq K",
+  "license": "MIT",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",

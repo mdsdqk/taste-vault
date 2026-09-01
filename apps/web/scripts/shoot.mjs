@@ -1,18 +1,46 @@
 // Deterministic screenshots of the running Portal for design review.
 // Usage: node apps/web/scripts/shoot.mjs [baseUrl]
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
 
 const BASE = process.argv[2] || "http://127.0.0.1:5175";
-const OUT = new URL("../../../.impeccable/review/", import.meta.url).pathname.replace(
-  /^\/([A-Za-z]:)/,
-  "$1",
-);
+const OUT = fileURLToPath(new URL("../../../.impeccable/review/", import.meta.url));
 mkdirSync(OUT, { recursive: true });
 
-const CHROME =
-  process.env.CHROME_PATH ||
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+function findChrome() {
+  if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
+  const localApp = process.env.LOCALAPPDATA || "";
+  const candidates = {
+    darwin: [
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    ],
+    win32: [
+      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+      path.join(localApp, "Google", "Chrome", "Application", "chrome.exe"),
+    ],
+    linux: [
+      "/usr/bin/google-chrome-stable",
+      "/usr/bin/google-chrome",
+      "/usr/bin/chromium-browser",
+      "/usr/bin/chromium",
+      "/snap/bin/chromium",
+    ],
+  };
+  const list = candidates[process.platform] ?? candidates.linux;
+  const hit = list.find((p) => p && existsSync(p));
+  if (!hit) {
+    throw new Error(
+      "Chrome/Chromium not found. Set CHROME_PATH to the browser binary and retry.",
+    );
+  }
+  return hit;
+}
+
+const CHROME = findChrome();
 
 const shots = [
   { file: "desktop.png", url: "/?theme=light", w: 1440, h: 1024, full: true },
@@ -75,7 +103,7 @@ for (const s of shots) {
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
   );
-  await page.screenshot({ path: OUT + s.file, fullPage: s.full });
+  await page.screenshot({ path: path.join(OUT, s.file), fullPage: s.full });
   console.log(
     `${s.file.padEnd(28)} ${s.w}px  h-overflow:${overflow}px${overflow > 1 ? "  <-- CHECK" : ""}`,
   );
@@ -107,7 +135,10 @@ for (const s of shots) {
   await new Promise((r) => setTimeout(r, 400));
   await page.goto(BASE + "/removed?theme=light", { waitUntil: "networkidle0" });
   await settle(page);
-  await page.screenshot({ path: OUT + "removed-populated-desktop.png", fullPage: true });
+  await page.screenshot({
+    path: path.join(OUT, "removed-populated-desktop.png"),
+    fullPage: true,
+  });
   console.log("removed-populated-desktop.png    (drove remove flow)");
   await page.close();
 }

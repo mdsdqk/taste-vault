@@ -87,7 +87,24 @@ stance, recorded in
 
 ## Getting started
 
-Requires **Node 22** and **pnpm 11**.
+Requires **Node 22** and **git**. The installer brings pnpm with it.
+
+**Fastest way — one command:**
+
+```bash
+npm create taste-vault
+```
+
+Same thing: `npx create-taste-vault` or `npx create-taste-vault init`. This clones the latest release into `./taste-vault` and installs dependencies. Then:
+
+```bash
+cd taste-vault
+pnpm start
+```
+
+Open [http://localhost:5174](http://localhost:5174).
+
+Prefer to clone by hand? You'll need pnpm 11 (`corepack enable` on Node 22).
 
 ```bash
 git clone https://github.com/mdsdqk/taste-vault
@@ -95,7 +112,7 @@ cd taste-vault
 pnpm install
 ```
 
-Then, from the repo root:
+From the repo root:
 
 | Command | What it does |
 | --- | --- |

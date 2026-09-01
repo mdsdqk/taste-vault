@@ -1,0 +1,10 @@
+# LF everywhere so shebangs and scripts survive a clone on any OS.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.avif binary
+*.ico binary
