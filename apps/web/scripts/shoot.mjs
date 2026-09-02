@@ -110,37 +110,54 @@ for (const s of shots) {
   await page.close();
 }
 
-// Populated "Recently removed": drive the real remove flow, then screenshot.
+// Populated "Recently removed": drive the real remove flow, screenshot, then
+// restore so the Vault is left as we found it.
 {
+  const slug = "cosmos-infinite-canvas-2026-08-15";
   const page = await browser.newPage();
   await page.setViewport({ width: 1440, height: 1024, deviceScaleFactor: 1 });
-  await page.goto(BASE + "/r/cosmos-infinite-canvas-2026-08-15?theme=light", {
-    waitUntil: "networkidle0",
-    timeout: 30000,
-  });
-  await settle(page);
-  await page.evaluate(() => {
-    const btn = [...document.querySelectorAll("button")].find((b) =>
-      /remove/i.test(b.textContent || ""),
-    );
-    btn?.click();
-  });
-  await new Promise((r) => setTimeout(r, 200));
-  await page.evaluate(() => {
-    const btn = [...document.querySelectorAll("button")].find((b) =>
-      /take it down/i.test(b.textContent || ""),
-    );
-    btn?.click();
-  });
-  await new Promise((r) => setTimeout(r, 400));
-  await page.goto(BASE + "/removed?theme=light", { waitUntil: "networkidle0" });
-  await settle(page);
-  await page.screenshot({
-    path: path.join(OUT, "removed-populated-desktop.png"),
-    fullPage: true,
-  });
-  console.log("removed-populated-desktop.png    (drove remove flow)");
-  await page.close();
+  try {
+    await page.goto(BASE + `/r/${slug}?theme=light`, {
+      waitUntil: "networkidle0",
+      timeout: 30000,
+    });
+    await settle(page);
+    const removed = await page.evaluate(() => {
+      const btn = [...document.querySelectorAll("button")].find((b) =>
+        /remove/i.test(b.textContent || ""),
+      );
+      btn?.click();
+      return Boolean(btn);
+    });
+    if (!removed) {
+      console.warn("skipped populated removed shot — piece not on the wall");
+    } else {
+      await new Promise((r) => setTimeout(r, 200));
+      await page.evaluate(() => {
+        const btn = [...document.querySelectorAll("button")].find((b) =>
+          /take it down/i.test(b.textContent || ""),
+        );
+        btn?.click();
+      });
+      await new Promise((r) => setTimeout(r, 400));
+      await page.goto(BASE + "/removed?theme=light", { waitUntil: "networkidle0" });
+      await settle(page);
+      await page.screenshot({
+        path: path.join(OUT, "removed-populated-desktop.png"),
+        fullPage: true,
+      });
+      console.log("removed-populated-desktop.png    (drove remove flow)");
+    }
+  } finally {
+    await page.evaluate(async (s) => {
+      try {
+        await fetch(`/api/removed/${encodeURIComponent(s)}/restore`, { method: "POST" });
+      } catch {
+        /* already on the wall, or the server is down */
+      }
+    }, slug);
+    await page.close();
+  }
 }
 
 await browser.close();

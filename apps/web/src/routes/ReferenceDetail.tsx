@@ -6,8 +6,10 @@ import {
   updateReference,
   type ReferenceEdits,
 } from "@/lib/api";
+import { writeErrorMessage } from "@/lib/flash";
 import { useVault } from "@/lib/hooks";
 import { applyQuery, EMPTY_QUERY } from "@/lib/query";
+import { safeHttpUrl } from "@/lib/normalize";
 import type { Reference } from "@/lib/types";
 import { ArrowLeft, Chevron, Pencil, ThumbDown, ThumbUp, Trash } from "@/components/icons";
 import { RatingMark } from "@/components/marks";
@@ -21,17 +23,30 @@ export function ReferenceDetail() {
   const [params, setParams] = useSearchParams();
   const { references } = useVault();
 
-  const [ref, setRef] = useState<Reference | null | undefined>(undefined);
+  const live = references.find((r) => r.slug === slug);
+  const [local, setLocal] = useState<Reference | null | undefined>(undefined);
   const editing = params.get("edit") === "1";
 
   useEffect(() => {
-    let live = true;
-    setRef(undefined);
-    getReference(slug).then((r) => live && setRef(r));
-    return () => {
-      live = false;
-    };
+    setLocal(undefined);
   }, [slug]);
+
+  useEffect(() => {
+    if (live) setLocal(live);
+  }, [live]);
+
+  useEffect(() => {
+    if (live) return;
+    let on = true;
+    getReference(slug).then((r) => {
+      if (on) setLocal(r);
+    });
+    return () => {
+      on = false;
+    };
+  }, [slug, live]);
+
+  const ref = local;
 
   const ordered = useMemo(
     () => applyQuery(references, EMPTY_QUERY),
@@ -55,7 +70,7 @@ export function ReferenceDetail() {
 
   const save = async (edits: ReferenceEdits) => {
     const updated = await updateReference(slug, edits);
-    setRef(updated);
+    setLocal(updated);
     setEditing(false);
   };
 
@@ -89,7 +104,7 @@ export function ReferenceDetail() {
         </div>
 
         <div>
-          {editing ? (
+          {editing && !ref.degraded ? (
             <EditForm reference={ref} onSave={save} onCancel={() => setEditing(false)} />
           ) : (
             <ViewSide reference={ref} onEdit={() => setEditing(true)} onRemove={remove} />
@@ -126,7 +141,7 @@ function ViewSide({
   onEdit: () => void;
   onRemove: () => void;
 }) {
-  const [lead, ...rest] = splitNote(r.noteText);
+  const href = safeHttpUrl(r.url);
   return (
     <>
       <div className="headblock">
@@ -135,8 +150,8 @@ function ViewSide({
             <>
               <dt>Source</dt>
               <dd>
-                {r.url ? (
-                  <a href={r.url} target="_blank" rel="noreferrer">
+                {href ? (
+                  <a href={href} target="_blank" rel="noreferrer">
                     {r.source}
                   </a>
                 ) : (
@@ -172,9 +187,15 @@ function ViewSide({
           )}
         </dl>
         <div className="editbar" style={{ margin: "0.9rem 0 0", padding: "0.75rem 0 0", borderBottom: 0 }}>
-          <button type="button" className="btn" onClick={onEdit}>
-            <Pencil /> Uncap the pen
-          </button>
+          {r.degraded ? (
+            <p className="flash-inline" style={{ margin: 0 }}>
+              Fix <code>reference.md</code> on disk — the Portal won’t overwrite a file it can’t read.
+            </p>
+          ) : (
+            <button type="button" className="btn" onClick={onEdit}>
+              <Pencil /> Uncap the pen
+            </button>
+          )}
           <ConfirmDialog
             danger
             trigger={
@@ -183,7 +204,7 @@ function ViewSide({
               </button>
             }
             title={`Take “${r.title}” off the wall?`}
-            body="It moves to Recently removed. You can restore it, or delete it for good from there."
+            body="It moves to Recently removed. Restore it from there anytime — the Portal never deletes the folder."
             confirmLabel="Take it down"
             onConfirm={onRemove}
           />
@@ -205,13 +226,11 @@ function ViewSide({
           the folder name and the date from its suffix. Add or fix a{" "}
           <code>reference.md</code> and it fills in.
         </p>
-      ) : r.noteText.trim() ? (
-        <div className="note">
-          {lead && <span className="lead">{`“${lead}”`}</span>}
-          {rest.map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
+      ) : r.noteHtml ? (
+        <div
+          className="note"
+          dangerouslySetInnerHTML={{ __html: stampLead(r.noteHtml) }}
+        />
       ) : (
         <p className="note">
           <span className="lead">No note yet.</span>
@@ -258,7 +277,7 @@ function EditForm({
   onCancel,
 }: {
   reference: Reference;
-  onSave: (edits: ReferenceEdits) => void;
+  onSave: (edits: ReferenceEdits) => Promise<void>;
   onCancel: () => void;
 }) {
   const [title, setTitle] = useState(r.title);
@@ -269,6 +288,8 @@ function EditForm({
   const [tags, setTags] = useState(r.tags.join(", "));
   const [surface, setSurface] = useState(r.surface ?? "");
   const [note, setNote] = useState(r.noteText);
+  const [err, setErr] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const dirty =
     title !== r.title ||
@@ -282,7 +303,9 @@ function EditForm({
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
+    setErr(null);
+    setSaving(true);
+    void onSave({
       title: title.trim(),
       url: url.trim() || null,
       kind: kind || null,
@@ -294,7 +317,13 @@ function EditForm({
         .filter(Boolean),
       surface: surface.trim() || null,
       noteText: note,
-    });
+    })
+      .catch((error: unknown) => {
+        setErr(writeErrorMessage(error));
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   return (
@@ -407,14 +436,19 @@ function EditForm({
       />
 
       <div className="editbar">
-        <button type="submit" className="btn btn--solid">
-          Cap the pen — save
+        <button type="submit" className="btn btn--solid" disabled={saving}>
+          {saving ? "Saving…" : "Cap the pen — save"}
         </button>
-        <button type="button" className="btn" onClick={onCancel}>
+        <button type="button" className="btn" onClick={onCancel} disabled={saving}>
           Cancel
         </button>
         <span className="dirty">{dirty ? "unsaved changes" : "no changes"}</span>
       </div>
+      {err && (
+        <p className="flash-inline" role="alert">
+          {err}
+        </p>
+      )}
       <p className="synthetic-note" style={{ marginTop: "1rem", borderTop: 0 }}>
         A half-filled reference saves fine — nothing here is required.
       </p>
@@ -422,19 +456,10 @@ function EditForm({
   );
 }
 
-function splitNote(note: string): string[] {
-  const t = note.trim();
-  if (!t) return [];
-  const stop = t.search(/(?<=[.!?])\s/); // index of the space after the first sentence
-  if (stop > 40) return [t.slice(0, stop).trimEnd(), ...paras(t.slice(stop + 1))];
-  return paras(t);
+function stampLead(html: string): string {
+  return html.replace(/<p>/, '<p class="lead">');
 }
-function paras(s: string): string[] {
-  return s
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-}
+
 function ratingWord(r: number, sentiment: "positive" | "negative"): string {
   if (sentiment === "negative") {
     return r === 3 ? "never do this" : r === 2 ? "worth avoiding" : "noted";

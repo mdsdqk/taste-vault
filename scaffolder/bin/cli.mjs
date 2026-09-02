@@ -46,9 +46,7 @@ function die(msg) {
 }
 
 function winQuote(value) {
-  const s = String(value);
-  if (!/[\s"]/u.test(s)) return s;
-  return `"${s.replace(/"/g, '""')}"`;
+  return `"${String(value).replace(/"/g, '""')}"`;
 }
 
 function run(cmd, args, cwd, capture = false) {
@@ -183,8 +181,8 @@ async function main() {
   try {
     installDeps(folder);
   } catch {
-    console.warn(
-      '\n! pnpm install failed — you can re-run it later from the folder with "pnpm install".',
+    die(
+      `pnpm install failed. The repo is in ${display} — cd in and run "pnpm install" to finish.`,
     );
   }
 

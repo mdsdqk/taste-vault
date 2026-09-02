@@ -168,9 +168,9 @@ PRD §5; an SSE-driven "new plate pinned up" update; one orchestrated
 print/gallery motion grammar with a reduced-motion path. Deleting a Reference
 moves its folder to a hidden removed state (e.g. `references/.trash/<slug>/`,
 already covered by the `references/*` gitignore) that a **Recently removed**
-panel lists, with restore and permanently-delete; permanently-delete routes to
-the OS trash. Kept until the user empties it (optional later: auto-purge after N
-days).
+panel lists, with restore. There is no permanently-delete in the Portal —
+pieces stay in Recently removed until restored, or until the folder is deleted
+by hand from disk.
 
 **Honest risk:** a bright riso/gallery look has its own generic cluster (the
 "playful startup, five candy colours, hand-drawn blobs" trap). Defences: colour
@@ -185,7 +185,7 @@ at the cost of screenshot or prose legibility.
 **In scope for this brief:** Library view; Reference detail view (including its
 in-place create / edit / delete affordances, since the user placed authoring
 there rather than on separate screens); a lightweight **Recently removed** panel
-(list + restore + permanently-delete).
+(list + restore).
 
 **Fidelity / breadth:** the two production-ready screens plus the removed panel
 and all material states. Not in this brief: a separate `/new` or `/edit` route,
@@ -248,7 +248,8 @@ field may be missing.
 - **Editing:** "pen uncapped" — fields writable in place, unsaved-change
   indication, drag-to-add images, pick cover.
 - **Delete:** removes the piece from the wall into a hidden removed state; a
-  **Recently removed** panel lists it with restore and permanently-delete.
+  **Recently removed** panel lists it with restore. The Portal never permanently
+  deletes a folder.
 - **Recently removed (empty):** a quiet "nothing removed" state.
 - **Save of an incomplete Reference:** allowed, no blocking validation.
 
@@ -302,7 +303,7 @@ field may be missing.
 - Label carries a **subtle `kind` dot** (mark, not fill; palette-derived tints),
   in addition to the sentiment border. `surface` is not colour-coded.
 - **Delete is recoverable:** into a hidden removed state with a **Recently
-  removed** panel (restore / permanently-delete → OS trash).
+  removed** panel (restore only — the Portal never permanently deletes).
 - **Ledger view deferred** past build 1; gallery only, with windowing; toggle
   stubbed.
 

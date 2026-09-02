@@ -857,6 +857,41 @@
 .note p:last-child {
   margin-bottom: 0;
 }
+.note > p.lead::before {
+  content: "“";
+}
+.note > p.lead::after {
+  content: "”";
+}
+.note a {
+  color: var(--accent-text);
+  text-underline-offset: 0.15em;
+}
+.note code,
+.note kbd {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 0.85em;
+}
+.note ul,
+.note ol {
+  margin: 0 0 0.9rem;
+  padding-left: 1.25rem;
+}
+.note li {
+  margin: 0.2rem 0;
+}
+.note blockquote {
+  margin: 0 0 0.9rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-soft);
+}
+.note pre {
+  overflow-x: auto;
+  padding: 0.75rem;
+  background: var(--panel-2);
+  margin: 0 0 0.9rem;
+}
 
 .legend {
   font-family: "Spline Sans Mono", ui-monospace, monospace;
@@ -1103,10 +1138,40 @@ textarea.field {
   color: var(--ink-soft);
   margin: 0 0 1.25rem;
 }
+.dialog-content .flash-inline {
+  margin: -0.35rem 0 1rem;
+}
 .dialog-actions {
   display: flex;
   gap: 0.6rem;
   justify-content: flex-end;
+}
+
+.flash {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.85rem 0 0;
+  padding: 0.7rem 0.9rem;
+  background: var(--dislike-tint);
+  border: 2px solid var(--dislike);
+  color: var(--ink);
+}
+.flash p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.flash-inline {
+  margin: 0.75rem 0 0;
+  color: var(--dislike);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.btn:disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 /* ---- misc ------------------------------------------------------------------ */

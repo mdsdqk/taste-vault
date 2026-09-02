@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Reference } from "./types";
 import { createReference, listReferences, listRemoved, subscribe } from "./api";
+import { flash, writeErrorMessage } from "./flash";
 
 interface VaultState {
   references: Reference[];
@@ -16,22 +17,21 @@ export function useVault(): VaultState & { reload: () => void } {
     removed: [],
     loading: true,
   });
+  const seq = useRef(0);
 
   const reload = useCallback(() => {
-    let cancelled = false;
+    const n = ++seq.current;
     Promise.all([listReferences(), listRemoved()]).then(([references, removed]) => {
-      if (!cancelled) setState({ references, removed, loading: false });
+      if (n !== seq.current) return;
+      setState({ references, removed, loading: false });
     });
-    return () => {
-      cancelled = true;
-    };
   }, []);
 
   useEffect(() => {
-    const cancel = reload();
-    const unsub = subscribe(() => reload());
+    reload();
+    const unsub = subscribe(reload);
     return () => {
-      cancel();
+      seq.current += 1;
       unsub();
     };
   }, [reload]);
@@ -43,8 +43,12 @@ export function useVault(): VaultState & { reload: () => void } {
 export function useCreateReference(): () => Promise<void> {
   const navigate = useNavigate();
   return useCallback(async () => {
-    const ref = await createReference();
-    navigate(`/r/${ref.slug}?edit=1`);
+    try {
+      const ref = await createReference();
+      navigate(`/r/${ref.slug}?edit=1`);
+    } catch (err) {
+      flash(writeErrorMessage(err));
+    }
   }, [navigate]);
 }
 

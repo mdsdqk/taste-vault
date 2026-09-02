@@ -2,7 +2,6 @@ import { createReadStream, existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import trash from "trash";
 import type { FastifyInstance } from "fastify";
 import type { Config } from "./config.js";
 import type { Vault } from "./vault.js";
@@ -17,10 +16,12 @@ import { isInsideDir, isSafeSegment } from "./util.js";
 
 /**
  * The disk-write half of the API: create, amend, remove (→ `.trash/`), list
- * removed, restore, and permanently delete (→ the OS trash). Every write goes
- * through `reference-md.ts` so the on-disk format stays identical to what the
- * scaffold and a hand author would produce. No endpoint validates field values
- * — a half-filled Reference is allowed (ADR 0001).
+ * removed, and restore. There is no permanent-delete endpoint — Recently
+ * removed is the archive. A folder can still be deleted by hand from disk;
+ * the Portal will not. Every write goes through `reference-md.ts` so the
+ * on-disk format stays identical to what the scaffold and a hand author would
+ * produce. No endpoint validates field values — a half-filled Reference is
+ * allowed (ADR 0001).
  */
 
 const MIME: Record<string, string> = {
@@ -62,10 +63,16 @@ export async function registerWriteRoutes(
   const { referencesDir } = config;
   const trashDir = path.join(referencesDir, ".trash");
 
-  /** Read a folder's `reference.md` into `{ data, body }`; back up broken YAML. */
-  async function readMd(dir: string): Promise<{ data: Record<string, unknown>; body: string }> {
+  /** Read a folder's `reference.md` into `{ data, body }`. Broken YAML is a
+   *  conflict — we never rename or overwrite a file we couldn't parse. */
+  async function readMd(
+    dir: string,
+  ): Promise<
+    | { ok: true; data: Record<string, unknown>; body: string }
+    | { ok: false }
+  > {
     const mdPath = path.join(dir, "reference.md");
-    if (!existsSync(mdPath)) return { data: {}, body: "" };
+    if (!existsSync(mdPath)) return { ok: true, data: {}, body: "" };
     const raw = await fs.readFile(mdPath, "utf8");
     try {
       const parsed = matter(raw);
@@ -73,12 +80,9 @@ export async function registerWriteRoutes(
         parsed.data && typeof parsed.data === "object" && !Array.isArray(parsed.data)
           ? (parsed.data as Record<string, unknown>)
           : {};
-      return { data, body: parsed.content };
+      return { ok: true, data, body: parsed.content };
     } catch {
-      const backup = `${mdPath}.bak-${Date.now()}`;
-      await fs.rename(mdPath, backup);
-      app.log.warn(`reference.md in ${path.basename(dir)} had unparseable YAML — kept as ${path.basename(backup)}`);
-      return { data: {}, body: "" };
+      return { ok: false };
     }
   }
 
@@ -128,7 +132,14 @@ export async function registerWriteRoutes(
       if (!existsSync(dir)) return reply.code(404).send({ error: "not found" });
 
       const edits = req.body ?? {};
-      const { data, body } = await readMd(dir);
+      const md = await readMd(dir);
+      if (!md.ok) {
+        return reply.code(409).send({
+          error:
+            "reference.md has unparseable YAML. Fix the file on disk — the Portal will not overwrite it.",
+        });
+      }
+      const { data, body } = md;
       const nextData = applyEdits(data, edits);
       const nextBody = "noteText" in edits ? edits.noteText ?? "" : body;
       await atomicWrite(
@@ -209,26 +220,6 @@ export async function registerWriteRoutes(
 
       await vault.forceRefresh();
       return vault.find(finalSlug) ?? (await raw(finalSlug, "/api/references", referencesDir));
-    },
-  );
-
-  // --- permanently delete → OS trash ------------------------------------
-  app.delete<{ Params: { slug: string } }>(
-    "/api/removed/:slug",
-    async (req, reply) => {
-      const { slug } = req.params;
-      if (!isSafeSegment(slug)) return reply.code(400).send({ error: "bad slug" });
-      const target = path.join(trashDir, slug);
-      if (!existsSync(target)) return reply.code(204).send(); // idempotent
-
-      try {
-        await trash(target);
-      } catch (err) {
-        app.log.warn(`OS trash failed for ${slug} (${(err as Error).message}) — removing directly`);
-        await fs.rm(target, { recursive: true, force: true });
-      }
-      await vault.forceRefresh(); // .trash is unwatched — nudge SSE so clients refetch /api/removed
-      return reply.code(204).send();
     },
   );
 }

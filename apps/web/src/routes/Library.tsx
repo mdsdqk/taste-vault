@@ -60,8 +60,7 @@ export function Library() {
       {!vaultEmpty && (
         <p className="synthetic-note">
           {shown.length} of {references.length} references
-          {!queryIsEmpty(query) ? " shown" : ""}. Contents are illustrative —
-          TasteVault has no real captures yet; screenshots are placeholders.
+          {!queryIsEmpty(query) ? " shown" : ""}.
         </p>
       )}
     </>

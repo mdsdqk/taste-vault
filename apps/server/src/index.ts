@@ -1,7 +1,15 @@
-import { loadConfig } from "./config.js";
+import { loadConfig, isLoopbackHost } from "./config.js";
 import { buildServer } from "./server.js";
 
 const config = loadConfig();
+
+if (!isLoopbackHost(config.host) && !config.allowRemote) {
+  console.error(
+    `Refusing to bind ${config.host}: the write API has no auth. Pass --allow-remote or set TASTEVAULT_ALLOW_REMOTE=1 if you really mean it.`,
+  );
+  process.exit(1);
+}
+
 const app = await buildServer(config);
 
 try {

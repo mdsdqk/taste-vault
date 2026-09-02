@@ -17,8 +17,7 @@
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
     "markdown-it": "^14.1.0",
-    "sanitize-html": "^2.14.0",
-    "trash": "^9.0.0"
+    "sanitize-html": "^2.14.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
