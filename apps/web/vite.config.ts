@@ -3,8 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath, URL } from "node:url";
 
-// The Portal SPA. `/api` is proxied to the (future) Fastify scan/watch server
-// on 5174; until it exists the app runs entirely on local fixtures.
+// The Portal SPA. `/api` is proxied to the Fastify scan/watch server on 5174.
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -12,6 +11,6 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: { "/api": "http://localhost:5174" },
+    proxy: { "/api": "http://127.0.0.1:5174" },
   },
 });

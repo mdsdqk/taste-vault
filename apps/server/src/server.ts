@@ -42,6 +42,9 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
   app.get<{ Params: { slug: string } }>(
     "/api/references/:slug",
     async (req, reply) => {
+      if (!isSafeSegment(req.params.slug)) {
+        return reply.code(400).send({ error: "bad slug" });
+      }
       const ref = vault.find(req.params.slug);
       if (!ref) return reply.code(404).send({ error: "not found" });
       return ref;
@@ -66,7 +69,7 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
     },
   );
 
-  // Create, amend, remove → .trash/, list removed, restore, permanently delete.
+  // Create, amend, remove → .trash/, list removed, restore.
   await registerWriteRoutes(app, vault, config);
 
   // Live update: one event per debounced batch of Vault changes.
@@ -79,22 +82,47 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
       Connection: "keep-alive",
       "X-Accel-Buffering": "no",
     });
-    res.write("retry: 3000\n\n");
-    res.write("event: ready\ndata: {}\n\n");
+
+    let closed = false;
+    let heartbeat: ReturnType<typeof setInterval> | undefined;
+
+    const safeWrite = (chunk: string): void => {
+      if (closed || res.writableEnded) return;
+      try {
+        res.write(chunk);
+      } catch {
+        cleanup();
+      }
+    };
 
     const onChange = (): void => {
-      res.write("event: change\ndata: {}\n\n");
+      safeWrite("event: change\ndata: {}\n\n");
     };
+
+    const cleanup = (): void => {
+      if (closed) return;
+      closed = true;
+      if (heartbeat !== undefined) clearInterval(heartbeat);
+      vault.off("change", onChange);
+      try {
+        if (!res.writableEnded) res.end();
+      } catch {
+        /* ignore */
+      }
+    };
+
+    safeWrite("retry: 3000\n\n");
+    safeWrite("event: ready\ndata: {}\n\n");
+
     vault.on("change", onChange);
 
-    const heartbeat = setInterval(() => {
-      res.write(": ping\n\n");
+    heartbeat = setInterval(() => {
+      safeWrite(": ping\n\n");
     }, 25_000);
 
-    req.raw.on("close", () => {
-      clearInterval(heartbeat);
-      vault.off("change", onChange);
-    });
+    req.raw.on("close", cleanup);
+    req.raw.on("error", cleanup);
+    res.on("error", cleanup);
   });
 
   // `pnpm start`: also serve the built Portal, with SPA fallback.

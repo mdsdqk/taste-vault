@@ -38,7 +38,6 @@ pnpm start                 # build the Portal, then serve it + the API on :5174
 | `GET /api/removed` | — | `RawReference[]` from `.trash/` (images under `/api/removed/:slug/:file`) |
 | `GET /api/removed/:slug/:file` | — | a raw asset file from a removed Reference |
 | `POST /api/removed/:slug/restore` | — | moves the folder back into `references/`, returns the restored `RawReference` |
-| `DELETE /api/removed/:slug` | — | permanently deletes — routes the folder to the OS trash; `204`, idempotent |
 
 `RawReference` matches `apps/web/src/lib/types.ts` field-for-field, so
 `apps/web/src/lib/api.ts` drops in behind these with no component changes. The
@@ -49,8 +48,8 @@ Writes never validate field *values* (ADR 0001) — a half-filled Reference is
 allowed. `sentiment: positive` is written as the *absence* of the field
 (ADR 0002). Frontmatter is re-emitted in the canonical key order
 (`title, url, source, kind, saved, sentiment, rating, tags, surface`), tags
-inline. A `reference.md` with unparseable YAML is renamed to `*.bak-<ts>` before
-a fresh one is written, so nothing is silently lost.
+inline. A `reference.md` with unparseable YAML is left untouched; `PATCH`
+returns `409` rather than overwriting it.
 
 ### Degradation
 
@@ -67,9 +66,10 @@ a fresh one is written, so nothing is silently lost.
 | Env / flag | Default | Effect |
 |---|---|---|
 | `PORT` | `5174` | listen port |
-| `HOST` | `127.0.0.1` | listen host |
+| `HOST` | `127.0.0.1` | listen host (loopback only unless `--allow-remote` / `TASTEVAULT_ALLOW_REMOTE=1`) |
 | `TASTEVAULT_REFERENCES` | `<repo>/references` | the Vault directory to scan |
 | `TASTEVAULT_SERVE_WEB=0` / `--no-web` | serve when `apps/web/dist` exists | disable serving the built Portal |
+| `--allow-remote` / `TASTEVAULT_ALLOW_REMOTE=1` | off | permit a non-loopback `HOST` (the write API has no auth) |
 
 ## Layout
 
@@ -78,7 +78,7 @@ src/
 ├── index.ts        entry — load config, build server, listen, handle signals
 ├── config.ts       env + flags → Config
 ├── server.ts       Fastify instance: read routes, asset serving, SSE, SPA fallback
-├── write-routes.ts create / amend / remove / restore / purge
+├── write-routes.ts create / amend / remove / restore
 ├── vault.ts        in-memory scan kept fresh by a chokidar watch; emits "change"
 ├── scanner.ts      a folder of References → RawReference[] + warnings (never throws)
 ├── reference-md.ts the shared reference.md merge + serialise (also used by pnpm new-ref)

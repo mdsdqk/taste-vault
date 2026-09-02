@@ -53,6 +53,20 @@ function resolveSource(explicit: unknown, url: string | null): string | null {
   }
 }
 
+/** `http:` / `https:` only — anything else is shown as text, never as `href`. */
+export function safeHttpUrl(value: string | null): string | null {
+  if (!value) return null;
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return parsed.href;
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 function resolveCover(images: string[]): string | null {
   if (images.length === 0) return null;
   const named = images.find((src) => /(^|\/)cover\.[a-z0-9]+$/i.test(src));

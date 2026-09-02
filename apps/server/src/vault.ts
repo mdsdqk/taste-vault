@@ -16,6 +16,8 @@ export class Vault extends EventEmitter {
   private cache: RawReference[] = [];
   private watcher: FSWatcher | null = null;
   private timer: NodeJS.Timeout | null = null;
+  /** Serialises scans so an older in-flight `scan()` cannot overwrite a newer one. */
+  private tail: Promise<void> = Promise.resolve();
 
   constructor(
     private readonly referencesDir: string,
@@ -69,15 +71,22 @@ export class Vault extends EventEmitter {
     }, 150);
   }
 
-  private async refresh(emit: boolean): Promise<void> {
-    const { references, warnings } = await scan(this.referencesDir);
-    for (const w of warnings) this.log(w);
-    this.cache = references;
-    if (emit) this.emit("change");
+  private refresh(emit: boolean): Promise<void> {
+    const next = this.tail.then(async () => {
+      const { references, warnings } = await scan(this.referencesDir);
+      for (const w of warnings) this.log(w);
+      this.cache = references;
+      if (emit) this.emit("change");
+    });
+    this.tail = next.catch((err: unknown) => {
+      this.log(`scan failed: ${String(err)}`);
+    });
+    return next;
   }
 
   async stop(): Promise<void> {
     if (this.timer) clearTimeout(this.timer);
+    await this.tail;
     await this.watcher?.close();
   }
 }

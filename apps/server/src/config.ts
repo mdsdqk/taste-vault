@@ -18,6 +18,17 @@ export interface Config {
    * server serves it whenever `apps/web/dist/index.html` is present.
    */
   serveWeb: boolean;
+  /**
+   * Bind a non-loopback address. The write API has no auth, so this is off
+   * unless `--allow-remote` or `TASTEVAULT_ALLOW_REMOTE=1` is set.
+   */
+  allowRemote: boolean;
+}
+
+const LOOPBACK = new Set(["127.0.0.1", "::1", "localhost"]);
+
+export function isLoopbackHost(host: string): boolean {
+  return LOOPBACK.has(host.toLowerCase());
 }
 
 export function loadConfig(argv: string[] = process.argv.slice(2)): Config {
@@ -31,5 +42,8 @@ export function loadConfig(argv: string[] = process.argv.slice(2)): Config {
       process.env.TASTEVAULT_REFERENCES ?? path.join(repoRoot, "references"),
     webDist: path.join(repoRoot, "apps", "web", "dist"),
     serveWeb,
+    allowRemote:
+      argv.includes("--allow-remote") ||
+      process.env.TASTEVAULT_ALLOW_REMOTE === "1",
   };
 }

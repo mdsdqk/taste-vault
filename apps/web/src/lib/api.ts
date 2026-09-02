@@ -39,7 +39,23 @@ async function write<T>(method: string, path: string, body?: unknown): Promise<T
     headers: body === undefined ? undefined : { "content-type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`${method} ${path} → ${res.status}`);
+  if (!res.ok) {
+    let message = `${method} ${path} → ${res.status}`;
+    try {
+      const payload: unknown = await res.json();
+      if (
+        payload &&
+        typeof payload === "object" &&
+        "error" in payload &&
+        typeof (payload as { error: unknown }).error === "string"
+      ) {
+        message = (payload as { error: string }).error;
+      }
+    } catch {
+      /* keep the status line */
+    }
+    throw new Error(message);
+  }
   if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
 }
@@ -98,11 +114,6 @@ export async function removeReference(slug: string): Promise<void> {
 
 export async function restoreReference(slug: string): Promise<void> {
   await write<void>("POST", `/removed/${encodeURIComponent(slug)}/restore`);
-}
-
-/** Permanently delete — the server routes the folder to the OS trash. */
-export async function purgeReference(slug: string): Promise<void> {
-  await write<void>("DELETE", `/removed/${encodeURIComponent(slug)}`);
 }
 
 /* ---- live updates: the server's SSE stream (`GET /api/events`) ---- */

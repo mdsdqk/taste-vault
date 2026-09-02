@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
-import { purgeReference, restoreReference } from "@/lib/api";
+import { restoreReference } from "@/lib/api";
+import { flash, writeErrorMessage } from "@/lib/flash";
 import { useVault } from "@/lib/hooks";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { formatDate } from "@/components/PieceCard";
 import { KindDot } from "@/components/marks";
-import { ArrowLeft, Restore, Trash } from "@/components/icons";
+import { ArrowLeft, Restore } from "@/components/icons";
 
 export function RecentlyRemoved() {
   const { removed } = useVault();
+
+  const restore = async (slug: string) => {
+    try {
+      await restoreReference(slug);
+    } catch (err) {
+      flash(writeErrorMessage(err));
+    }
+  };
 
   return (
     <>
@@ -19,17 +27,16 @@ export function RecentlyRemoved() {
         <h1 className="vaultname" style={{ fontSize: "clamp(2.2rem,5vw,3.5rem)" }}>
           Recently removed
         </h1>
-        <p className="standfirst">
-          Taken off the wall — restore, or delete for good
-        </p>
+        <p className="standfirst">Taken off the wall — restore anytime</p>
       </header>
 
       {removed.length === 0 ? (
         <div className="state">
           <h2>Nothing’s been removed.</h2>
           <p>
-            When you take a piece off the wall it waits here until you restore it
-            or delete it for good.
+            When you take a piece off the wall it waits here until you restore
+            it. The Portal never deletes a folder; taking one off disk is a
+            matter for the filesystem.
           </p>
         </div>
       ) : (
@@ -53,28 +60,16 @@ export function RecentlyRemoved() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => restoreReference(r.slug)}
+                  onClick={() => void restore(r.slug)}
                 >
                   <Restore /> Restore
                 </button>
-                <ConfirmDialog
-                  danger
-                  trigger={
-                    <button type="button" className="btn btn--danger">
-                      <Trash /> Delete for good
-                    </button>
-                  }
-                  title={`Delete “${r.title}” for good?`}
-                  body="This removes the folder from disk (to your system trash). It won’t come back here."
-                  confirmLabel="Delete for good"
-                  onConfirm={() => purgeReference(r.slug)}
-                />
               </div>
             </div>
           ))}
           <p className="page-foot">
-            Restore anytime. “Delete for good” sends the folder to your system
-            trash — the Portal never erases it silently.
+            Restore anytime. Pieces stay here until you put them back on the
+            wall — or delete the folder by hand from <code>references/.trash/</code>.
           </p>
         </div>
       )}

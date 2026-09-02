@@ -16,7 +16,8 @@ pnpm build            # typecheck + production build
 - **Reference detail** (`/r/:slug`) — the piece on the table: plates, typeset
   identity block, the User Note set large, AI Interpretation as dated marginalia,
   in-place edit ("uncap the pen"), delete → Recently removed.
-- **Recently removed** (`/removed`) — restore or delete-for-good.
+- **Recently removed** (`/removed`) — restore. Pieces stay here; the Portal
+  never permanently deletes a folder.
 
 Theme: SLATE (light) / NOIR (dark), following `prefers-color-scheme`; a manual
 override lives in the topbar and via `?theme=light|dark`.
