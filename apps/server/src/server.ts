@@ -1,10 +1,11 @@
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import Fastify, { type FastifyInstance } from "fastify";
+import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
 import type { Config } from "./config.js";
 import { Vault } from "./vault.js";
-import { registerWriteRoutes } from "./write-routes.js";
+import { registerWriteRoutes, realignReferenceFolders } from "./write-routes.js";
 import { isSafeSegment } from "./util.js";
 
 export async function buildServer(config: Config): Promise<FastifyInstance> {
@@ -16,6 +17,8 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
     mkdirSync(config.referencesDir, { recursive: true });
     app.log.warn(`created missing Vault directory at ${config.referencesDir}`);
   }
+
+  await realignReferenceFolders(config.referencesDir, (msg) => app.log.info(msg));
 
   const vault = new Vault(config.referencesDir, (msg) => app.log.warn(msg));
   await vault.start();
@@ -69,7 +72,15 @@ export async function buildServer(config: Config): Promise<FastifyInstance> {
     },
   );
 
-  // Create, amend, remove → .trash/, list removed, restore.
+  // Breaks encapsulation via fastify-plugin, so write routes can read `req.parts()`.
+  await app.register(multipart, {
+    limits: {
+      fileSize: 25 * 1024 * 1024,
+      files: 24,
+    },
+  });
+
+  // Create, amend, hang screenshots, remove → .trash/, list removed, restore.
   await registerWriteRoutes(app, vault, config);
 
   // Live update: one event per debounced batch of Vault changes.

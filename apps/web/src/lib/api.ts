@@ -72,6 +72,16 @@ export interface ReferenceEdits {
   noteText?: string;
 }
 
+export function imageFilename(src: string): string {
+  const path = (src.split("?")[0] ?? src).split("#")[0] ?? src;
+  const seg = path.split("/").filter(Boolean).pop() ?? "";
+  try {
+    return decodeURIComponent(seg);
+  } catch {
+    return seg;
+  }
+}
+
 export async function listReferences(): Promise<Reference[]> {
   const raw = await readJSON<RawReference[]>("/references", []);
   return raw.map(normalize);
@@ -102,9 +112,11 @@ export async function updateReference(
   return normalize(raw);
 }
 
-/** Create a blank mount. A half-filled Reference is valid — no gate. */
-export async function createReference(): Promise<Reference> {
-  const raw = await write<RawReference>("POST", "/references", {});
+/** Create a Reference folder. Pass the submitted identity — Pin itself writes nothing. */
+export async function createReference(
+  edits: ReferenceEdits = {},
+): Promise<Reference> {
+  const raw = await write<RawReference>("POST", "/references", edits);
   return normalize(raw);
 }
 
@@ -114,6 +126,62 @@ export async function removeReference(slug: string): Promise<void> {
 
 export async function restoreReference(slug: string): Promise<void> {
   await write<void>("POST", `/removed/${encodeURIComponent(slug)}/restore`);
+}
+
+/** Hang one or more screenshots in a Reference folder. */
+export async function addReferenceImages(
+  slug: string,
+  files: File[],
+): Promise<Reference> {
+  const form = new FormData();
+  for (const file of files) form.append("files", file, file.name || "screenshot.png");
+  const res = await fetch(`${API}/references/${encodeURIComponent(slug)}/images`, {
+    method: "POST",
+    body: form,
+  });
+  if (!res.ok) {
+    let message = `POST /references/${slug}/images → ${res.status}`;
+    try {
+      const payload: unknown = await res.json();
+      if (
+        payload &&
+        typeof payload === "object" &&
+        "error" in payload &&
+        typeof (payload as { error: unknown }).error === "string"
+      ) {
+        message = (payload as { error: string }).error;
+      }
+    } catch {
+      /* keep the status line */
+    }
+    throw new Error(message);
+  }
+  return normalize((await res.json()) as RawReference);
+}
+
+/** Rename `file` to `cover.<ext>` so it becomes the grid thumbnail. */
+export async function setReferenceCover(
+  slug: string,
+  file: string,
+): Promise<Reference> {
+  const raw = await write<RawReference>(
+    "POST",
+    `/references/${encodeURIComponent(slug)}/cover`,
+    { file },
+  );
+  return normalize(raw);
+}
+
+/** Unlink a screenshot from the folder. */
+export async function removeReferenceImage(
+  slug: string,
+  file: string,
+): Promise<Reference> {
+  const raw = await write<RawReference>(
+    "DELETE",
+    `/references/${encodeURIComponent(slug)}/${encodeURIComponent(file)}`,
+  );
+  return normalize(raw);
 }
 
 /* ---- live updates: the server's SSE stream (`GET /api/events`) ---- */

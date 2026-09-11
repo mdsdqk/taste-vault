@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { renderNote } from "./markdown.js";
 import type { RawReference } from "./types.js";
+import { isImageFilename } from "./util.js";
 
 /**
  * Read a directory of Reference folders off disk. Nothing here throws on bad
@@ -13,14 +14,6 @@ import type { RawReference } from "./types.js";
  * `urlPrefix` is prepended to each image path — `/api/references` for the live
  * Vault, `/api/removed` for `.trash/`.
  */
-
-const IMAGE_EXT = new Set([
-  ".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif", ".svg",
-]);
-
-function isImage(name: string): boolean {
-  return IMAGE_EXT.has(path.extname(name).toLowerCase());
-}
 
 /** gray-matter hands back `any` for `data`; keep only a plain object. */
 function coerceFrontmatter(data: unknown): Record<string, unknown> {
@@ -53,7 +46,7 @@ export async function readReference(
   }
 
   const images = entries
-    .filter(isImage)
+    .filter(isImageFilename)
     .sort((a, b) => a.localeCompare(b))
     .map(
       (file) =>

@@ -542,7 +542,13 @@ opens from 3 to 9 lines, and `.wall:hover .piece` drops siblings to `opacity:
 `transform 0.22s cubic-bezier(0.22,0.61,0.36,1)`. **Disliked** swaps the edge to
 2.5px `--dislike`, the outer mat ring to a red mix, and the pushpin gradient to
 `--dislike` — nothing louder, no corner chip. Imageless → `.plate--empty` with a
-centred mono `NO SCREENSHOT YET`, still hung.
+centred mono `NO SCREENSHOT YET`, still hung. On the **detail view**, an empty
+plate is a drop target: dashed keyline, a plus, and mono `DROP A SCREENSHOT —
+OR CLICK TO CHOOSE`. With the pen uncapped, each hung plate grows a printed
+action line (`COVER` / `use as cover` / `take down`) and a shorter drop plate
+is appended to hang another. A drag-over veil (`DROP TO HANG`) covers the
+column. Screenshots write to the folder immediately once the piece exists; on
+the compose page they are held until **Pin it**. They are not form fields.
 
 ### Signature component — the monumental note lead (`.note .lead`)
 

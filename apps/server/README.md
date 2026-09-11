@@ -32,8 +32,11 @@ pnpm start                 # build the Portal, then serve it + the API on :5174
 
 | Method + path | Body | Effect |
 |---|---|---|
-| `POST /api/references` | `{ title?, url?, kind?, sentiment?, rating?, tags?, surface?, noteText? }` (all optional) | creates `references/<slug>-<today>/reference.md`; returns the new `RawReference` (`201`) |
-| `PATCH /api/references/:slug` | `ReferenceEdits` — same fields; `null`/`""` clears a field | merges into `reference.md` (frontmatter + body), returns the updated `RawReference` |
+| `POST /api/references` | `{ title?, url?, kind?, sentiment?, rating?, tags?, surface?, noteText? }` (all optional) | creates `references/<slugify(title)>-<today>/` (or `untitled-reference-<today>` if title is blank); returns the new `RawReference` (`201`) |
+| `POST /api/references/:slug/images` | `multipart/form-data` files (`png` `webp` `jpg` `gif` `avif` `svg`, 25 MB each) | writes them into the folder under safe filenames; returns the updated `RawReference` (`201`) |
+| `POST /api/references/:slug/cover` | `{ file }` (filename already in the folder) | renames that file to `cover.<ext>` (moves any existing `cover.*` aside); returns the updated `RawReference` |
+| `DELETE /api/references/:slug/:file` | — | unlinks that image from the folder; returns the updated `RawReference` |
+| `PATCH /api/references/:slug` | `ReferenceEdits` — same fields as create; `null`/`""` clears a field | merges into `reference.md` (frontmatter + body); if `title` is set, the folder is renamed to match; returns the updated `RawReference` (possibly under a new slug) |
 | `DELETE /api/references/:slug` | — | moves the folder to `references/.trash/`; `204` |
 | `GET /api/removed` | — | `RawReference[]` from `.trash/` (images under `/api/removed/:slug/:file`) |
 | `GET /api/removed/:slug/:file` | — | a raw asset file from a removed Reference |
@@ -49,7 +52,8 @@ allowed. `sentiment: positive` is written as the *absence* of the field
 (ADR 0002). Frontmatter is re-emitted in the canonical key order
 (`title, url, source, kind, saved, sentiment, rating, tags, surface`), tags
 inline. A `reference.md` with unparseable YAML is left untouched; `PATCH`
-returns `409` rather than overwriting it.
+returns `409` rather than overwriting it. On boot, folders whose names don't
+match `title` in `reference.md` are renamed (including `.trash/`).
 
 ### Degradation
 

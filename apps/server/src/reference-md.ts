@@ -115,11 +115,13 @@ export function serializeReferenceMd(data: Data, body: string): string {
     : `---\n${frontmatter}\n---\n`;
 }
 
-/** Lowercase, non-alphanumerics → "-", trimmed to ~60 chars. Matches the Portal. */
+/** Lowercase, strip diacritics, non-alphanumerics → "-", trimmed to ~60 chars. */
 export function slugify(title: string): string {
   return (
     title
       .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{M}/gu, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 60) || "reference"

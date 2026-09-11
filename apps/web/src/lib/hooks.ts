@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Reference } from "./types";
-import { createReference, listReferences, listRemoved, subscribe } from "./api";
-import { flash, writeErrorMessage } from "./flash";
+import { listReferences, listRemoved, subscribe } from "./api";
 
 interface VaultState {
   references: Reference[];
@@ -39,16 +38,11 @@ export function useVault(): VaultState & { reload: () => void } {
   return { ...state, reload };
 }
 
-/** Create a blank mount and open it in edit mode. Works from any route. */
-export function useCreateReference(): () => Promise<void> {
+/** Open the compose page. Nothing is written until the pin is submitted. */
+export function useCreateReference(): () => void {
   const navigate = useNavigate();
-  return useCallback(async () => {
-    try {
-      const ref = await createReference();
-      navigate(`/r/${ref.slug}?edit=1`);
-    } catch (err) {
-      flash(writeErrorMessage(err));
-    }
+  return useCallback(() => {
+    navigate("/pin");
   }, [navigate]);
 }
 

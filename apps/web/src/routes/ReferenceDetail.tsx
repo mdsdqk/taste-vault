@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
+  addReferenceImages,
+  createReference,
   getReference,
   removeReference,
   updateReference,
@@ -14,29 +16,79 @@ import type { Reference } from "@/lib/types";
 import { ArrowLeft, Chevron, Pencil, ThumbDown, ThumbUp, Trash } from "@/components/icons";
 import { RatingMark } from "@/components/marks";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { PlateStage } from "@/components/PlateStage";
 import { NotFound } from "@/components/states";
 import { formatDate } from "@/components/PieceCard";
 
+type Staged = { id: string; file: File; url: string };
+
+function fileExt(file: File): string {
+  const dot = file.name.lastIndexOf(".");
+  const fromName = dot >= 0 ? file.name.slice(dot).toLowerCase() : "";
+  if (fromName) return fromName;
+  if (file.type === "image/jpeg") return ".jpg";
+  if (file.type === "image/svg+xml") return ".svg";
+  const sub = file.type.split("/")[1];
+  return sub ? `.${sub}` : ".png";
+}
+
+function draftReference(): Reference {
+  return {
+    slug: "",
+    title: "",
+    url: null,
+    source: null,
+    kind: null,
+    saved: new Date().toISOString().slice(0, 10),
+    sentiment: "positive",
+    rating: null,
+    tags: [],
+    surface: null,
+    images: [],
+    cover: null,
+    noteHtml: "",
+    noteText: "",
+    ai: null,
+    degraded: false,
+  };
+}
+
 export function ReferenceDetail() {
   const { slug = "" } = useParams();
+  const location = useLocation();
+  const isDraft = location.pathname === "/pin";
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const { references } = useVault();
 
-  const live = references.find((r) => r.slug === slug);
-  const [local, setLocal] = useState<Reference | null | undefined>(undefined);
-  const editing = params.get("edit") === "1";
+  const live = isDraft ? undefined : references.find((r) => r.slug === slug);
+  const [local, setLocal] = useState<Reference | null | undefined>(
+    isDraft ? draftReference() : undefined,
+  );
+  const editing = isDraft || params.get("edit") === "1";
+
+  const [staged, setStaged] = useState<Staged[]>([]);
+  const [coverId, setCoverId] = useState<string | null>(null);
+  const stagedRef = useRef(staged);
+  stagedRef.current = staged;
 
   useEffect(() => {
+    return () => {
+      for (const s of stagedRef.current) URL.revokeObjectURL(s.url);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isDraft) return;
     setLocal(undefined);
-  }, [slug]);
+  }, [slug, isDraft]);
 
   useEffect(() => {
     if (live) setLocal(live);
   }, [live]);
 
   useEffect(() => {
-    if (live) return;
+    if (isDraft || live) return;
     let on = true;
     getReference(slug).then((r) => {
       if (on) setLocal(r);
@@ -44,7 +96,7 @@ export function ReferenceDetail() {
     return () => {
       on = false;
     };
-  }, [slug, live]);
+  }, [slug, live, isDraft]);
 
   const ref = local;
 
@@ -53,8 +105,9 @@ export function ReferenceDetail() {
     [references],
   );
   const idx = ordered.findIndex((r) => r.slug === slug);
-  const prev = idx > 0 ? ordered[idx - 1] : null;
-  const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
+  const prev = !isDraft && idx > 0 ? ordered[idx - 1] : null;
+  const next =
+    !isDraft && idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
 
   if (ref === undefined) {
     return <div className="state" aria-busy="true" />;
@@ -62,6 +115,7 @@ export function ReferenceDetail() {
   if (ref === null) return <NotFound />;
 
   const setEditing = (on: boolean) => {
+    if (isDraft) return;
     const p = new URLSearchParams(params);
     if (on) p.set("edit", "1");
     else p.delete("edit");
@@ -69,15 +123,40 @@ export function ReferenceDetail() {
   };
 
   const save = async (edits: ReferenceEdits) => {
+    if (isDraft) {
+      const created = await createReference(edits);
+      if (staged.length > 0) {
+        const cover = coverId ?? staged[0]?.id ?? null;
+        const files = staged.map((s) => {
+          if (s.id !== cover) return s.file;
+          return new File([s.file], `cover${fileExt(s.file)}`, {
+            type: s.file.type,
+          });
+        });
+        await addReferenceImages(created.slug, files);
+      }
+      for (const s of staged) URL.revokeObjectURL(s.url);
+      setStaged([]);
+      navigate(`/r/${created.slug}`, { replace: true });
+      return;
+    }
     const updated = await updateReference(slug, edits);
     setLocal(updated);
     setEditing(false);
+    if (updated.slug !== slug) {
+      navigate(`/r/${updated.slug}`, { replace: true });
+    }
   };
 
   const remove = async () => {
     await removeReference(slug);
     navigate("/");
   };
+
+  const plateImages = isDraft ? staged.map((s) => s.url) : ref.images;
+  const plateCover = isDraft
+    ? (staged.find((s) => s.id === (coverId ?? staged[0]?.id))?.url ?? null)
+    : ref.cover;
 
   return (
     <>
@@ -86,46 +165,76 @@ export function ReferenceDetail() {
       </Link>
 
       <article className="detail" data-sentiment={ref.sentiment}>
-        <div className="detail__plates">
-          {ref.images.length > 0 ? (
-            ref.images.map((src, i) => (
-              <img
-                key={src}
-                className="bigplate"
-                src={src}
-                alt={`Screenshot ${i + 1} of ${ref.images.length}: ${ref.title}`}
-              />
-            ))
-          ) : (
-            <div className="bigplate plate--empty">
-              <span>No screenshot yet</span>
-            </div>
-          )}
-        </div>
+        <PlateStage
+          slug={ref.slug}
+          title={ref.title}
+          images={plateImages}
+          cover={plateCover}
+          editing={editing}
+          onUpdate={setLocal}
+          local={
+            isDraft
+              ? {
+                  onAdd: (files) => {
+                    setStaged((prev) => [
+                      ...prev,
+                      ...files.map((file) => ({
+                        id: crypto.randomUUID(),
+                        file,
+                        url: URL.createObjectURL(file),
+                      })),
+                    ]);
+                  },
+                  onRemove: (src) => {
+                    setStaged((prev) => {
+                      const hit = prev.find((s) => s.url === src);
+                      if (hit) URL.revokeObjectURL(hit.url);
+                      const nextStaged = prev.filter((s) => s.url !== src);
+                      if (hit && (coverId === hit.id || coverId === null)) {
+                        setCoverId(null);
+                      }
+                      return nextStaged;
+                    });
+                  },
+                  onCover: (src) => {
+                    const hit = staged.find((s) => s.url === src);
+                    if (hit) setCoverId(hit.id);
+                  },
+                }
+              : undefined
+          }
+        />
 
         <div>
           {editing && !ref.degraded ? (
-            <EditForm reference={ref} onSave={save} onCancel={() => setEditing(false)} />
+            <EditForm
+              reference={ref}
+              draft={isDraft}
+              onSave={save}
+              onCancel={() => (isDraft ? navigate("/") : setEditing(false))}
+            />
           ) : (
             <ViewSide reference={ref} onEdit={() => setEditing(true)} onRemove={remove} />
           )}
         </div>
       </article>
 
-      <nav className="detail__nav" aria-label="Move along the wall">
-        {prev ? (
-          <Link to={`/r/${prev.slug}`} data-dir="prev">
-            <Chevron style={{ transform: "rotate(180deg)" }} /> {prev.title}
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next && (
-          <Link to={`/r/${next.slug}`} data-dir="next">
-            <Chevron /> {next.title}
-          </Link>
-        )}
-      </nav>
+      {!isDraft && (
+        <nav className="detail__nav" aria-label="Move along the wall">
+          {prev ? (
+            <Link to={`/r/${prev.slug}`} data-dir="prev">
+              <Chevron style={{ transform: "rotate(180deg)" }} /> {prev.title}
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <Link to={`/r/${next.slug}`} data-dir="next">
+              <Chevron /> {next.title}
+            </Link>
+          )}
+        </nav>
+      )}
     </>
   );
 }
@@ -273,10 +382,12 @@ function ViewSide({
 
 function EditForm({
   reference: r,
+  draft = false,
   onSave,
   onCancel,
 }: {
   reference: Reference;
+  draft?: boolean;
   onSave: (edits: ReferenceEdits) => Promise<void>;
   onCancel: () => void;
 }) {
@@ -336,7 +447,11 @@ function EditForm({
             className="field"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="de-kebabed from the folder if blank"
+            placeholder={
+              draft
+                ? "the folder is named from this"
+                : "de-kebabed from the folder if blank"
+            }
           />
         </div>
         <div className="field-row">
@@ -437,7 +552,13 @@ function EditForm({
 
       <div className="editbar">
         <button type="submit" className="btn btn--solid" disabled={saving}>
-          {saving ? "Saving…" : "Cap the pen — save"}
+          {saving
+            ? draft
+              ? "Pinning…"
+              : "Saving…"
+            : draft
+              ? "Pin it"
+              : "Cap the pen — save"}
         </button>
         <button type="button" className="btn" onClick={onCancel} disabled={saving}>
           Cancel
@@ -450,7 +571,9 @@ function EditForm({
         </p>
       )}
       <p className="synthetic-note" style={{ marginTop: "1rem", borderTop: 0 }}>
-        A half-filled reference saves fine — nothing here is required.
+        {draft
+          ? "Nothing is written to disk until you pin it — a half-filled piece is fine."
+          : "A half-filled reference saves fine — nothing here is required."}
       </p>
     </form>
   );

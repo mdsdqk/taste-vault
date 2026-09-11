@@ -14,6 +14,7 @@ export default function App() {
       <Flash />
       <Routes>
         <Route path="/" element={<Library />} />
+        <Route path="/pin" element={<ReferenceDetail />} />
         <Route path="/r/:slug" element={<ReferenceDetail />} />
         <Route path="/removed" element={<RecentlyRemoved />} />
         <Route path="*" element={<Library />} />
