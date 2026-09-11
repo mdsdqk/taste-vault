@@ -11,10 +11,12 @@ export function EmptyGallery({ onCreate }: { onCreate: () => void }) {
         as evidence for later. Hang your first piece and the wall starts filling.
       </p>
       <p>
-        Add one by hand: make a folder <code>references/&lt;slug&gt;-&lt;date&gt;/</code>,
-        drop in a screenshot, and (optionally) a <code>reference.md</code> with a
-        note on <em>why</em>. Or run <code>pnpm new</code> for a well-formed folder.
-        Every field is optional — a half-filled piece still hangs.
+        Hang your first piece with <em>Pin a reference</em>, fill in why it
+        belongs, then cap the pen — that’s when the folder is written. You can
+        still author by hand: a folder{" "}
+        <code>references/&lt;slug&gt;-&lt;date&gt;/</code> with images, and
+        optionally a <code>reference.md</code> on <em>why</em>. Every field is
+        optional — a half-filled piece still hangs.
       </p>
       <div className="state__actions">
         <button type="button" className="btn btn--solid" onClick={onCreate}>

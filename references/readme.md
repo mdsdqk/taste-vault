@@ -18,7 +18,15 @@ Agents read `AGENTS.md` in this folder to learn that both poles exist.
 
 ## Creating a Reference
 
-**The easy way:** from the repo root run
+**From the Portal:** pin a reference. That opens a compose page — nothing is
+written until you hit **Pin it**. The folder is named from the title you type
+(`<slug>-<today>`). Drop screenshots onto the empty plate (or click it to
+choose files); they stay in the browser until you pin. After that, screenshots
+write to the folder immediately. Paste works too, as long as you aren't typing
+in a field. With the pen uncapped, pick **Use as cover** to set the grid
+thumbnail (renames the file to `cover.*`) or **Take down** to remove one.
+
+**The scaffold:** from the repo root run
 
 ```
 pnpm new-ref
@@ -102,10 +110,11 @@ badge and lets you filter by sentiment; agents pick them up from the field (see
 
 ## Screenshots
 
-Put any image files (`png`, `webp`, `jpg`, `gif`) directly in the folder. They're
-shown sorted by filename. Name one `cover.*` to control the grid thumbnail;
-otherwise the first image is used. A Reference with no images still appears, with
-a text placeholder.
+Put any image files (`png`, `webp`, `jpg`, `gif`, `avif`, `svg`) directly in the
+folder — from the Portal's plates, or by hand. They're shown sorted by filename.
+Name one `cover.*` (or pick **Use as cover** in the Portal) to control the grid
+thumbnail; otherwise the first image is used. A Reference with no images still
+appears, with a drop target instead of a plate.
 
 ## Browsing
 
